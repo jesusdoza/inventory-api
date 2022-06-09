@@ -1,5 +1,6 @@
 // import modules
-const secrets = process.env.cata;
+// const secrets = process.env.cata;
+const secrets = require('./secrets').cata_key
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
@@ -133,7 +134,7 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
 
         // MIDDLEWARE 
         // ===================================================
-        app.use(cors())
+        app.use(cors());
         app.set('view engine', 'ejs'); // for template
         app.use(bodyParser.urlencoded({extended:true})); //get body data
         app.use(bodyParser.json());
@@ -148,20 +149,19 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
 
             try{
                 const allInventory = await quotesCollection.find().toArray()
-            }
-            catch(err){
-                throw (` root fail to get all inventory${err}`)
-            }
+            
+           
+            
             
        
 
-            try{
+            
                  //render index.ejs template passing in variable inventory holding allInventory
                 response.render('index.ejs',{inventory:allInventory})
                 response.end()
             }
             catch(err){
-                console.log(`render error at root ${err}`)
+                console.log(`error at root inventory load ${err}`)
             }
            
         
@@ -213,7 +213,7 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
 
 
 app.listen(process.env.PORT || PORT, ()=>{
-    console.log('server on ')
+    console.log(`server on ${secrets}`)
 })
 
 
