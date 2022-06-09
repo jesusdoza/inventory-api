@@ -145,13 +145,25 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
 
         app.get('/', async (request, response)=>{
 
-            const allInventory = await quotesCollection.find().toArray()
-            // console.log(allInventory)
-            // response.send(allInventory)
 
+            try{
+                const allInventory = await quotesCollection.find().toArray()
+            }
+            catch(err){
+                console.log(` root fail to get all inventory${err}`)
+            }
+            
+       
 
-            //render index.ejs template passing in variable inventory holding allInventory
-            response.render('index.ejs',{inventory:allInventory})
+            try{
+                 //render index.ejs template passing in variable inventory holding allInventory
+                response.render('index.ejs',{inventory:allInventory})
+                response.end()
+            }
+            catch(err){
+                console.log(`render error at root ${err}`)
+            }
+           
         
         })
 
@@ -187,7 +199,7 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
                     }
                 )
 
-                console.log(result)
+                // console.log(result)
 
                response.redirect('/');
             })
