@@ -1,6 +1,7 @@
 // import modules
-const EXPRESS = require('express')
-const BODYPARSER= require('body-parser')
+const secrets = require('./secrets.js')
+const express = require('express')
+const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const PORT = 8000;
 
@@ -9,116 +10,116 @@ const uri = `mongodb+srv://${secrets.cata_key}@cluster0.losdw.mongodb.net/?retry
 
 
 //instance of express
-const app = EXPRESS();
+const app = express();
 
 
-inventory = {
-    3618046:{
+inventory = [
+    {partnumber:'3618046',
         model:'Celect',
         instock:0,
     },
-    3619037:{
+    {partnumber:'3619037',
         model:'Celect',
         instock:0,
     },
-    3614473:{
+    {partnumber:'3614473',
         model:'Celect',
         instock:0,
     },
-    3408303:{
+    {partnumber:'3408303',
         model:'Celect Plus',
         instock:0,
     },
-    3408300:{
+    {partnumber:'3408300',
         model:'Celect Plus',
         instock:0,
     },
-    3096662:{
+    {partnumber:'3096662',
         model:'Celect Plus',
         instock:0,
     },
-    3944105:{
+    {partnumber:'3944105',
         model:'ISC',
         instock:0,
     },
-    3944125:{
+    {partnumber:'3944125',
         model:'ISC',
         instock:0,
     },
-    3944124:{
+    {partnumber:3944124,
         model:'ISB',
         instock:0,
     },
-    3945868:{
+    {partnumber:3945868,
         model:'ISB',
         instock:0,
     },
-    3990517:{
+    {partnumber:3990517,
         model:'ISB',
         instock:0,
     },
-    3942858:{
+    {partnumber:3942858,
         model:'ISB',
         instock:0,
     },
-    3942335:{
+    {partnumber:3942335,
         model:'ISB',
         instock:0,
     },
-    3492860:{
+    {partnumber:3492860,
         model:'ISB',
         instock:0,
     },
-    3682729:{
+    {partnumber:3682729,
         model:'ISX EGR',
         instock:0,
     },
-    3683289:{
+    {partnumber:3683289,
         model:'ISX EGR',
         instock:0,
     },
-    3684009:{
+    {partnumber:3684009,
         model:'ISX EGR',
         instock:0,
     },
-    3684275:{
+    {partnumber:3684275,
         model:'ISX EGR',
         instock:0,
     },
-    4921776:{
+    {partnumber:4921776,
         model:'ISX',
         instock:0,
     },
-    3681404:{
+    {partnumber:3681404,
         model:'ISX/ISM',
         instock:0,
     },
-    3681405:{
+    {partnumber:3681405,
         model:'ISX/ISM',
         instock:0,
     },
-    3408501:{
+    {partnumber:3408501,
         model:'ISX/ISM',
         instock:0,
     },
-    3680509:{
+    {partnumber:3680509,
         model:'ISX NON EGR',
         instock:0,
     },
-    3408426:{
+    {partnumber:3408426,
         model:'ISX NON EGR',
         instock:0,
     },
-    3103533:{
+    {partnumber:3103533,
         model:'ISX NON EGR',
         instock:0,
-    },
+    }
 
 
-}
+]
 
 
-MongoClient.connect(conString,{useUnifiedTopology: true, useUnifiedTopology: true,})
+MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
     .then(client =>{
 
 
@@ -139,13 +140,26 @@ MongoClient.connect(conString,{useUnifiedTopology: true, useUnifiedTopology: tru
         // ===================================================
         
 
-        app.get('/inventory', async (request, response)=>{
+        app.get('/', async (request, response)=>{
 
             const all = await quotesCollection.find().toArray()
             console.log(all)
-            res.send(all)
+            response.send(all)
         
         })
+
+
+        app.post('/inventory', async (request, response)=>{
+
+            inventory.forEach(async (e)=>{
+                const result = await quotesCollection.insertOne(e)
+                console.log(result)
+                // console.log(e)
+            })
+
+                // response.redirect('/');
+        });
+
         
 
 
@@ -162,12 +176,7 @@ MongoClient.connect(conString,{useUnifiedTopology: true, useUnifiedTopology: tru
 
         // });
 
-        // app.post('/quotes', async (req, res)=>{
-        //    const result = await quotesCollection.insertOne(req.body)
-        //         console.log(result)
-
-        //         res.redirect('/');
-        // });
+     
 
 
         // app.get('/api', async (req, res)=>{
