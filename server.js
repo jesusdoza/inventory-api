@@ -133,12 +133,12 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
 
         // MIDDLEWARE 
         // ===================================================
-         
+        app.use(cors())
         app.set('view engine', 'ejs'); // for template
         app.use(bodyParser.urlencoded({extended:true})); //get body data
         app.use(bodyParser.json());
         app.use(express.static('public')) //use templates from folder
-        app.use(cors())
+       
         // MIDDLEWARE 
         // ===================================================
         
