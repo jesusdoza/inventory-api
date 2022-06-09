@@ -4,7 +4,7 @@ const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const PORT = 8000;
-
+const cors = require('cors')
 
 const uri = `mongodb+srv://${secrets.cata_key}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
 
@@ -138,7 +138,7 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
         app.use(bodyParser.urlencoded({extended:true})); //get body data
         app.use(bodyParser.json());
         app.use(express.static('public')) //use templates from folder
-
+        app.use(cors())
         // MIDDLEWARE 
         // ===================================================
         
