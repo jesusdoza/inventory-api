@@ -1,12 +1,12 @@
 // import modules
-const secrets = require('./secrets.js')
+const secrets = process.env.cata;
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 const PORT = 8000;
 const cors = require('cors')
 
-const uri = `mongodb+srv://${secrets.cata_key}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://===@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
 
 
 //instance of express
