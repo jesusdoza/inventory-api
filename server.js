@@ -150,7 +150,7 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
                 const allInventory = await quotesCollection.find().toArray()
             }
             catch(err){
-                console.log(` root fail to get all inventory${err}`)
+                throw (` root fail to get all inventory${err}`)
             }
             
        
