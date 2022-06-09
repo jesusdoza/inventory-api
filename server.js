@@ -129,12 +129,15 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
         //collection working on inside the database
         const quotesCollection = db.collection('inventory');
 
-         console.log('connected to database ');
+        console.log('connected to database ');
 
-        app.set('view engine', 'ejs');
-        app.use(bodyParser.urlencoded({extended:true}));
+        // MIDDLEWARE 
+        // ===================================================
+         
+        app.set('view engine', 'ejs'); // for template
+        app.use(bodyParser.urlencoded({extended:true})); //get body data
         app.use(bodyParser.json());
-        // app.use(express.static('public'))
+        app.use(express.static('public')) //use templates from folder
 
         // MIDDLEWARE 
         // ===================================================
@@ -144,7 +147,11 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
 
             const allInventory = await quotesCollection.find().toArray()
             // console.log(allInventory)
-            response.send(allInventory)
+            // response.send(allInventory)
+
+
+            //render index.ejs template passing in variable inventory holding allInventory
+            response.render('index.ejs',{inventory:allInventory})
         
         })
 
@@ -176,7 +183,7 @@ MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
                    ,
                     //options
                     {   //if query does not find anything insert it as new partnumber
-                        upsert: true
+                        upsert: false
                     }
                 )
 

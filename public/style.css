@@ -1,0 +1,29 @@
+h1{
+    color:rgb(207, 97, 97);
+}
+
+
+li{
+    width: 100%;
+    border: gray 1px solid;
+}
+
+li span{
+   
+    display: inline-block;
+    width: 30%;
+}
+
+li{
+    background-color: rgb(102, 174, 69);
+}
+
+.good-stock{
+    background-color: rgb(102, 174, 69);
+}
+.medium-stock{
+    background-color: rgb(174, 169, 69);
+}
+.low-stock{
+    background-color: rgb(174, 97, 69);
+}
