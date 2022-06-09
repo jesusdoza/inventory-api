@@ -1,6 +1,6 @@
 // import modules
 const secrets = process.env.cata;
-// const secrets = require('./secrets').cata_key
+
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
