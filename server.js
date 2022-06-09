@@ -6,7 +6,7 @@ const MongoClient = require('mongodb').MongoClient
 const PORT = 8000;
 const cors = require('cors')
 
-const uri = `mongodb+srv://===@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
 
 
 //instance of express
