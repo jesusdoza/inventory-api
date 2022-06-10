@@ -1,77 +1,94 @@
 
 
 const list = document.querySelector('#inventory')
+const update = document.querySelector('#update')
+
+// =================================================
+// EVENT LISTENERS
 
 
-//add
+//add or substract amount from stock buttons
 list.addEventListener('click', (event)=>{
-    //what was clicked
-    const target = event.target
-    console.log(event.target)
+    changeInventory(event)
 
-    //what item row was clicked
-    const item = event.target.closest('.partnumber')
-    // console.log(`item is`)
-    // console.log( item)
+})
 
-    //quantity of stock
-    const quantity = item.querySelector("input[type=number]")
-
-    //partnumber to use later to search database
-    const partId = item.querySelector('.partId').innerText
-     console.log( partId)
-
-    if(target.id=='reduce-button'){
-        console.log(`its reduce button`)
-        console.log( `quantity ${quantity.value}`)
-
-        if(quantity.value<=0){
-            quantity.value=0
-        }else{
-            quantity.value= +quantity.value - 1
-            console.log( `quantity ${quantity.value}`)
-        }
-       
-    }
-    else if(target.id=='add-button'){
-        console.log(`its reduce button`)
-        console.log( `quantity ${quantity.value}`)
-        
-        quantity.value= +quantity.value + 1
-        console.log( `quantity ${quantity.value}`)
-
-    }
-
-   
-
-
-
-
-
-//    fetch('/quotes',{
-//        method: 'put',
-//        headers: {'Content-Type': 'application/json'},
-//        body: JSON.stringify({
-          
-//        })
-//    })
-
-//    .then(response =>{
-//        if(response.ok){
-//            return response.json()
-//        }
-//    })
-//    .then(response=>{
-//        console.log(`RESPONSE WAS ***************************`)
-//        console.log(response)
-//    })
-//    .then(res =>{
-//        window.location.reload(true)
-//    })
-
+//event listener for update button
+update.addEventListener('click',(event)=>{
+    // get all inventory items and send to get checked
 
 })
 
 
 
 
+// ============================================================
+// FUNCTIONS
+// =============================================================
+
+//change inventory number locally to later send 
+function changeInventory(event_){
+    const target = event_.target
+        console.log(event_.target)
+
+    //what item row was clicked
+    const item = event_.target.closest('.partnumber')
+        // console.log(`item is`)
+        // console.log( item)
+
+    //quantity of stock
+    const quantity = item.querySelector("input[type=number]")
+
+    //partnumber to use later to search database
+    const part_id = item.querySelector('.part_id').innerText
+        console.log( part_id)
+
+     switch (target.id) {
+        case 'reduce-button':
+                console.log(`its reduce button`)
+                console.log( `quantity ${quantity.value}`)
+        
+                if(quantity.value<=0){
+                    quantity.value=0
+                }else{
+                    quantity.value= +quantity.value - 1
+                    console.log( `quantity ${quantity.value}`)
+                }
+                break;
+        
+        case 'add-button':
+                console.log(`its reduce button`)
+                console.log( `quantity ${quantity.value}`)
+                
+                quantity.value= +quantity.value + 1
+                console.log( `quantity ${quantity.value}`)
+                break;
+         
+        default:
+            console.log(`nothing wanted clicked`)
+            break;
+     }
+}
+
+
+
+
+
+
+// update items
+function updateItems(list_){
+    list_.forEach(element => {
+        //do fetch update for all
+    });
+}
+
+
+
+// what items had there quantities changed?
+//gets all items and filters out
+function itemsChanged(list_){
+
+
+    //return new list with items needing update at database
+    return 
+}

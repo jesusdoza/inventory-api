@@ -16,15 +16,18 @@
 
 
 
-		<form action="/quotes" method="POST">
-			<input type="text" name="name" id="name">
-			<input type="text" name="quote" id="quote">
+		<form action="/inventory" method="POST">
+			<input type="text" name="new_part" id="new_part">
+			<input type="text" name="new_model" id="new_model">
 
 			<button type="submit"> send</button>
 
 		</form>
-
-		<h3>inventory numbers:</h3>
+		<section>
+			<h3>inventory numbers:</h3>
+			<button id="update" class="update_inventory">update inventory</button>
+		</section>
+		
 		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
 
@@ -39,8 +42,8 @@
 
 				<!-- <li class="partnumber good-stock"> -->
 					<section>
-						<span class="partId"><%= inventory[i].partnumber %></span>
-						<span class="modelId"><%= inventory[i].model %></span>
+						<span class="part_id"><%= inventory[i].partnumber %></span>
+						<span class="model_id"><%= inventory[i].model %></span>
 						<input class="quantity" type="number" value=<%= inventory[i].instock %>>instock: <%= inventory[i].instock %></input>
 					</section>
 					<button id="add-button">
