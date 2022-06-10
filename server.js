@@ -90,14 +90,16 @@ const app = express();
 
     
 
-    //instance of connect function
-    let collection = connect()
 
 
 app.listen(process.env.PORT || PORT, ()=>{
     console.log(`server on ${PORT}`)
 })
 
+
+
+    //instance of connect function
+    let collection = connect()
 
 
 
