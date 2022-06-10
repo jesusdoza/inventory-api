@@ -97,13 +97,13 @@ function changeInventory(event_){
      switch (target.id) {
         case 'reduce-button':
                 console.log(`its reduce button`)
-                console.log( `quantity ${quantity.value}`)
+                // console.log( `quantity ${quantity.value}`)
         
                 if(quantity.value<=0){
                     quantity.value=0
                 }else{
                     quantity.value= +quantity.value - 1
-                    console.log( `quantity ${quantity.value}`)
+                    // console.log( `quantity ${quantity.value}`)
                 }
                 break;
         
