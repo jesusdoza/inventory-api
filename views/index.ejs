@@ -25,7 +25,7 @@
 		</form>
 
 		<h3>inventory numbers:</h3>
-		<ol>
+		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
 
 				<%if(inventory[i].instock > 7){%>
@@ -39,9 +39,9 @@
 
 				<!-- <li class="partnumber good-stock"> -->
 					<section>
-						<span><%= inventory[i].partnumber %></span>
-						<span><%= inventory[i].model %></span>
-						<input type="number" value=<%= inventory[i].instock %>>instock: <%= inventory[i].instock %></input>
+						<span class="partId"><%= inventory[i].partnumber %></span>
+						<span class="modelId"><%= inventory[i].model %></span>
+						<input class="quantity" type="number" value=<%= inventory[i].instock %>>instock: <%= inventory[i].instock %></input>
 					</section>
 					<button id="add-button">
 						increase amount
