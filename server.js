@@ -120,11 +120,11 @@ const app = express();
 // ]
 
 
-        app.use(cors());
-        app.set('view engine', 'ejs'); // for template
-        app.use(bodyParser.urlencoded({extended:true})); //get body data
-        app.use(bodyParser.json());
-        app.use(express.static('public')) //use templates from folder
+    app.use(cors());
+    app.set('view engine', 'ejs'); // for template
+    app.use(bodyParser.urlencoded({extended:true})); //get body data
+    app.use(bodyParser.json());
+    app.use(express.static('public')) //use templates from folder
 
 
 
@@ -151,12 +151,48 @@ const app = express();
             }
             
         
+        })//ROOT ============================================
+
+
+
+
+
+
+        //update inventory amount
+         app.put('/inventory', async (request, response)=>{
+            console.log(`received put request on server to update using`)
+            console.log(request.body)
+            //{ //EXAMPLE OBJECT STRUCTURE
+            //  partnumber:3103533,
+            //  model:'ISX NON EGR',
+            //  instock:0,
+            //}
+
+            try {
+                const result = await quotesCollection.findOneAndUpdate(
+                    //query
+                    {
+                        partnumber : request.body.partnumber
+                    },
+                    
+                    // update
+                    {
+                        $set : {
+                            instock: request.body.instock
+                        }
+                    }
+                   ,
+                    //options
+                    {   //if query does not find anything insert it as new partnumber
+                        upsert: false
+                    }
+                )
+               response.redirect('/');
+            } 
+            catch (error) {
+                
+            }
         })
-
-
-
-
-    
     }//end of connect function
 
     
@@ -168,6 +204,22 @@ const app = express();
 
     
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // old =======================================================OLD
 
         // app.get('/', async (request, response)=>{
         //     try{
