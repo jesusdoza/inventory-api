@@ -2,7 +2,9 @@
 
 const list = document.querySelector('#inventory')
 const update = document.querySelector('#update')
+const inventory=document.querySelectorAll(".partnumber");
 
+let test
 // =================================================
 // EVENT LISTENERS
 
@@ -13,9 +15,23 @@ list.addEventListener('click', (event)=>{
 
 })
 
+
+
 //event listener for update button
 update.addEventListener('click',(event)=>{
     // get all inventory items and send to get checked
+
+    //get all inventory
+    const inventory=document.querySelectorAll(".partnumber");
+        // console.log(inventory);
+
+
+    //what items where changed and need update
+    const itemsNeedUpdate = itemsChanged(inventory);
+    test =itemsNeedUpdate;//testing
+
+    updateItems(itemsNeedUpdate);
+
 
 })
 
@@ -25,6 +41,41 @@ update.addEventListener('click',(event)=>{
 // ============================================================
 // FUNCTIONS
 // =============================================================
+
+// update items
+function updateItems(list_){
+    list_.forEach(element => {
+
+        //do fetch update for all
+        console.log(element)
+    });
+}
+
+
+
+
+// what items had there quantities changed?
+//gets all items and filters out
+function itemsChanged(list_){
+    let newList=[];
+    let checklist= list_
+
+
+    //filter items that have not been changed
+    checklist.forEach((e)=>{
+        if( +e.querySelector('.quantity').value != +e.querySelector('.instock').innerText){
+            newList.push(e)
+            // console.log(`${e.querySelector('.quantity').value} ::: ${e.querySelector('.instock').innerText}  `)
+        }
+    })
+    // console.log(newList);
+    //return new list with items needing update at database
+   return newList;
+}
+
+
+
+
 
 //change inventory number locally to later send 
 function changeInventory(event_){
@@ -75,20 +126,8 @@ function changeInventory(event_){
 
 
 
-// update items
-function updateItems(list_){
-    list_.forEach(element => {
-        //do fetch update for all
-    });
-}
 
 
 
-// what items had there quantities changed?
-//gets all items and filters out
-function itemsChanged(list_){
 
 
-    //return new list with items needing update at database
-    return 
-}

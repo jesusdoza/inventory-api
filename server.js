@@ -1,6 +1,6 @@
 // import modules
-// const secrets = process.env.cata; //enviroment var for credentials else import it 
-const secrets = require('./secrets').cata_key
+// const secrets = process.env.cata; //enviroment var for credentials for heroku
+const secrets = require('./secrets').cata_key//local cridentials for testing
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient

@@ -44,7 +44,11 @@
 					<section>
 						<span class="part_id"><%= inventory[i].partnumber %></span>
 						<span class="model_id"><%= inventory[i].model %></span>
-						<input class="quantity" type="number" value=<%= inventory[i].instock %>>instock: <%= inventory[i].instock %></input>
+						<input class="quantity" type="number" value=<%= inventory[i].instock %>>
+						<span>instock: <span class="instock"><%= inventory[i].instock %></span> </span>
+						</input>
+						
+						
 					</section>
 					<button id="add-button">
 						increase amount
