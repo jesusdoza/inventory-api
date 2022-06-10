@@ -1,6 +1,6 @@
 // import modules
-const secrets = process.env.cata; //enviroment var for credentials else import it 
-// const secrets = require('./secrets').cata_key
+// const secrets = process.env.cata; //enviroment var for credentials else import it 
+const secrets = require('./secrets').cata_key
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
@@ -27,11 +27,11 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
         const collection =  await db.collection('inventory');
         
         
-        app.post('/inventory',(request,response)=>{
+        // app.post('/inventory',(request,response)=>{
 
-            response.send('post at inventory')
+        //     response.send('post at inventory')
 
-        })
+        // })
 
 
 
@@ -54,38 +54,38 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
 
 
         //update inventory amount
-         app.put('/inventory', async (request, response)=>{
-            console.log(`received put request on server to update using`)
-            console.log(request.body)
-            //{ //EXAMPLE OBJECT STRUCTURE
-            //  partnumber:3103533,
-            //  model:'ISX NON EGR',
-            //  instock:0,
-            //}
-            try {
-                const result = await collection.findOneAndUpdate(
-                    //query
-                    {
-                        partnumber : request.body.partnumber
-                    },
+        //  app.put('/inventory', async (request, response)=>{
+        //     console.log(`received put request on server to update using`)
+        //     console.log(request.body)
+        //     //{ //EXAMPLE OBJECT STRUCTURE
+        //     //  partnumber:3103533,
+        //     //  model:'ISX NON EGR',
+        //     //  instock:0,
+        //     //}
+        //     try {
+        //         const result = await collection.findOneAndUpdate(
+        //             //query
+        //             {
+        //                 partnumber : request.body.partnumber
+        //             },
                     
-                    {// update
-                        $set : {
-                            instock: request.body.instock
-                        }
-                    }
-                   ,
-                    //options
-                    {   //if query does not find anything insert it as new partnumber
-                        upsert: false
-                    }
-                )
-               response.redirect('/');
-            } 
-            catch (error) {
+        //             {// update
+        //                 $set : {
+        //                     instock: request.body.instock
+        //                 }
+        //             }
+        //            ,
+        //             //options
+        //             {   //if query does not find anything insert it as new partnumber
+        //                 upsert: false
+        //             }
+        //         )
+        //        response.redirect('/');
+        //     } 
+        //     catch (error) {
                 
-            }
-        })
+        //     }
+        // })
     }//end of connect function
 
     
