@@ -10,8 +10,8 @@ const cors = require('cors')
 const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
 
 
-//instance of express
-const app = express();
+        //instance of express
+        const app = express();
 
         app.use(cors());
         app.set('view engine', 'ejs'); // for template
