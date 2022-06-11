@@ -9,7 +9,7 @@ const PORT = 8000;
 const cors = require('cors')
 
 // const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
-const uri = process.env.cata
+const uri = process.env.connectStr
 
 
 
