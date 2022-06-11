@@ -1,18 +1,22 @@
 // import modules
 // const secrets = process.env.cata; //enviroment var for credentials for heroku
-const secrets = require('./secrets').cata_key//local cridentials for testing
+// const secrets = require('./secrets').cata_key//local cridentials for testing
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
+require('dotenv').config(); // to use with enviroment variables
 const PORT = 8000;
 const cors = require('cors')
 
-const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
+// const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
+const uri = process.env.cata
+
+
 
 
         //instance of express
         const app = express();
-
+        
         app.use(cors());
         app.set('view engine', 'ejs'); // for template
         app.use(bodyParser.urlencoded({extended:true})); //get body data
@@ -22,11 +26,16 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
 
 
     async function connect (){
+            //database wanted
+        const dbName='Cata'
+            //connect to mongo
         const client = await MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
-        const db =  await client.db('Cata');
+            //get database
+        const db =  await client.db(dbName);
+            //get collection from database
         const collection =  await db.collection('inventory');
         
-        //add new partnumber to inventory
+            //add new partnumber to inventory
         app.post('/inventory',(request,response)=>{
 
            
@@ -34,7 +43,7 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
         })
 
 
-        //get inventory numbers
+            //get inventory numbers
         app.get('/', async (request, response)=>{
             try{  
                 const allInventory = await collection.find().toArray()
@@ -56,7 +65,7 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
         //update single inventory amount entry
          app.put('/inventory', async (request, response)=>{
             console.log(`received put request on server to update using`)
-            // console.log(request.body)
+            console.log(request.body)
 
            
 
@@ -71,7 +80,8 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
                 const result = await collection.findOneAndUpdate(
                     //query
                     {
-                        partnumber : request.body.partnumber
+                        partnumber : request.body.partnumber,
+                        model: request.body.model
                     },
                     
                     {// update
@@ -85,10 +95,12 @@ const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=tr
                         upsert: false
                     }
                 )
-               response.redirect('/');
+              
+               response.redirect('/')
             } 
             catch (error) {
-                
+                response.sendStatus(404);
+                response.end()
             }
         })
     }//end of connect function
@@ -104,7 +116,7 @@ app.listen(process.env.PORT || PORT, ()=>{
 
 
     //instance of connect function
-    let collection = connect()
+connect()
 
 
 

@@ -17,6 +17,7 @@ list.addEventListener('click', (event)=>{
 
 
 
+
 //event listener for update button
 update.addEventListener('click',(event)=>{
     // get all inventory items and send to get checked
@@ -30,6 +31,7 @@ update.addEventListener('click',(event)=>{
     const itemsNeedUpdate = itemsChanged(inventory);
     test =itemsNeedUpdate;//testing
 
+    // console.log(itemsNeedUpdate)
     updateItems(itemsNeedUpdate);
 
 
@@ -43,12 +45,39 @@ update.addEventListener('click',(event)=>{
 // =============================================================
 
 // update items
-function updateItems(list_){
-    list_.forEach(element => {
+async function updateItems(list_){
+    
+    //loop through the list and make array of fetches
+    list_.forEach(async (element) => {
+        let responseArr=[]
+        const part = element.querySelector('.part_id').innerText
+        const model = element.querySelector('.model_id').innerText
+        const quantity = +element.querySelector('.quantity').value
 
         //do fetch update for all
-        console.log(element)
+        console.log(`fetch`)
+        console.log(` ${part}:: ${model}:: ${quantity} `)
+       
+         const response = await fetch('/inventory',{
+                method: 'PUT',
+                headers: {'Content-Type':'application/json'},
+                body:JSON.stringify({
+                    "partnumber":part,
+                    "model":model,
+                    "instock":quantity,
+               })
+            })
+
+        const data = await response.json();
+        responseArr.push(data);
+       
+           
+           
+        
+        
     });
+    
+    location.reload();
 }
 
 
