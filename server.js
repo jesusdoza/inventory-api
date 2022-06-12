@@ -5,12 +5,17 @@ const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
 require('dotenv').config(); // to use with enviroment variables
 const PORT = 8000;
-const cors = require('cors')
+const cors = require('cors');
+const { Collection } = require('mongodb');
 
 // const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
 const uri = process.env.connectStr
 
-
+let db; //holds database
+let collection ; //holds collection from database
+    
+const dbName='Cata'
+const collectionName='inventory'
 
 
         //instance of express
@@ -24,22 +29,112 @@ const uri = process.env.connectStr
 
 
 
-    async function connect (){
-            //database wanted
-        const dbName='Cata'
+  
+
+
             //connect to mongo
-        const client = await MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
-            //get database
-        const db =  await client.db(dbName);
-            //get collection from database
-        const collection =  await db.collection('inventory');
+        MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
+        .then(  client =>{
+                //get database
+            db = client.db(dbName);
+
+              //get collection from database
+            collection = db.collection(collectionName)
+
+        })
+
+
+
+        //delete one item
+        app.delete('/inventory', async (request, response)=>{
+            console.log('delete recieved')
+
+            let part='delete part placeholder'
+
+            part=request.body.part
+            
+           
+            console.log(request.body)
+
+            //search collection for part
+            const cursor = await collection.find({ 
+                'partnumber' : part         
+        }).toArray()
+           
+            console.log(cursor)
+
+
+            if(cursor.length){
+            //if part exists delete it
+                const result = await collection.deleteOne({
+                    'partnumber' : part
+                })
+                console.log(result)
+                response.status(200).send({deleted:{ cursor}})
+                response.end()
+            }
+
+            else{
+            //else item not in the database so do nothing
+
+               
+                response.send({no_such_item:part})
+                response.end()
+            }
+
+        })//end of delete
+            
+        
         
             //add new partnumber to inventory
-        app.post('/inventory',(request,response)=>{
+        app.post('/inventory', async (request, response)=>{
+
+            let part='new part placeholder',
+            newModel= 'new model placeholder',
+            newQuantity = 0
+
+            part=request.body.part
+            newModel= request.body.model
+            newQuantity = request.body.quantity
+
+            console.log(request.body)
+            //build object from form values
+            const newItem ={
+                partnumber:part,
+                model:newModel,
+                instock:newQuantity,
+            }
+
+           
+            //search collection for part
+            const cursor = await collection.find({ 
+                'partnumber' : part         
+            }).toArray()
+           
+            console.log(cursor.length)
+
+            //of cursor is not [] empty then database already has item
+            if(cursor.length){
+            //if part exists do not insert into database
+                response.status(409).send({error:{ newPart :part , problem:'already exists'}})
+                response.end()
+            }
+
+            else{
+            //else newItem not in the database so insert it
+
+                collection.insertOne(newItem)
+                // response.send({inserted:newItem})
+                response.redirect('/')
+            }
 
            
 
-        })
+
+
+        })//end post /inventory
+
+
 
 
             //get inventory numbers
@@ -56,7 +151,7 @@ const uri = process.env.connectStr
             catch(err){
                 throw new Error(`error at root inventory load ${err}`)
             }
-        })
+        })//end of get /
 
 
 
@@ -78,9 +173,9 @@ const uri = process.env.connectStr
                 //find specific entry
                 const result = await collection.findOneAndUpdate(
                     //query
-                    {
-                        partnumber : request.body.partnumber,
-                        model: request.body.model
+                    {      
+                        partnumber : request.body.partnumber
+                        
                     },
                     
                     {// update
@@ -101,8 +196,8 @@ const uri = process.env.connectStr
                 response.sendStatus(404);
                 response.end()
             }
-        })
-    }//end of connect function
+        })// end of put /inventory
+   
 
     
 
@@ -114,8 +209,6 @@ app.listen(process.env.PORT || PORT, ()=>{
 
 
 
-    //instance of connect function
-connect()
 
 
 

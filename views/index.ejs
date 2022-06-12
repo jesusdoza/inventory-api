@@ -14,25 +14,30 @@
 	<body>
 		<h1>Inventory</h1>
 
-
-
+		<!-- add new part to inventory form -->
 		<form action="/inventory" method="POST">
-			<input type="text" name="new_part" id="new_part">
-			<input type="text" name="new_model" id="new_model">
 
-			<button type="submit"> send</button>
-
+			<legend>add new partnumber</legend>
+				<input type="text" placeholder="part number" required name="part" id="newPart">
+				<input type="text" placeholder="engine model" required name="part" id="newModel">
+				<input type="number" placeholder="#" name="quantity" id="newQuantity" min="0" max="20" >
+				<button type="submit"> send</button>	
 		</form>
+
+
+
+
 		<section>
 			<h3>inventory numbers:</h3>
 			<button id="update" class="update_inventory">update inventory</button>
 		</section>
 		
+		<!-- inventory list -->
 		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
 
 				<%if(inventory[i].instock > 7){%>
-					<li class="partnumber good-stock">
+					<li class="partnumber good-stock" >
 				<%}else if(inventory[i].instock >= 4 ){%>
 					<li class="partnumber medium-stock">
 				<%}else{%>
@@ -40,38 +45,36 @@
 				<%} %>
 
 
-				<!-- <li class="partnumber good-stock"> -->
-					<section>
+				<!-- partnumber entry into DOM -->
+					<section class="part-info" >
 						<span class="part_id"><%= inventory[i].partnumber %></span>
 						<span class="model_id"><%= inventory[i].model %></span>
 						<input class="quantity" type="number" value=<%= inventory[i].instock %>>
 						<span>instock: <span class="instock"><%= inventory[i].instock %></span> </span>
 						</input>
 						
-						
 					</section>
-					<button id="add-button">
-						increase amount
-					</button>
-			
-					<button id="reduce-button">
-						reduce amount
-					</button>
+					<section>
+						<button  data-button="add-button">
+							increase amount
+						</button>
+				
+						<button  data-button="reduce-button">
+							reduce amount
+						</button>
+					</section>
+					<section>
+						<button >
+
+						</button>
+					</section>
+					
 				</li>
 				
 
 			<% } %>
 		</ol>
 			
-		
-
-		<button id="add-button">
-			increase amount
-		</button>
-
-		<button id="reduce-button">
-			reduce amount
-		</button>
 		
 
 		<script  src="main.js"></script>

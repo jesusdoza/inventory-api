@@ -20,7 +20,6 @@ list.addEventListener('click', (event)=>{
 
 //event listener for update button
 update.addEventListener('click',(event)=>{
-    // get all inventory items and send to get checked
 
     //get all inventory
     const inventory=document.querySelectorAll(".partnumber");
@@ -29,12 +28,8 @@ update.addEventListener('click',(event)=>{
 
     //what items where changed and need update
     const itemsNeedUpdate = itemsChanged(inventory);
-    test =itemsNeedUpdate;//testing
 
-    // console.log(itemsNeedUpdate)
     updateItems(itemsNeedUpdate);
-
-
 })
 
 
@@ -121,9 +116,11 @@ function changeInventory(event_){
 
     //partnumber to use later to search database
     const part_id = item.querySelector('.part_id').innerText
-        console.log( part_id)
+        console.log(part_id)
 
-     switch (target.id) {
+    test = target.dataset.button;
+    //  switch (target.id) {
+    switch (target.dataset.button) {
         case 'reduce-button':
                 console.log(`its reduce button`)
                 // console.log( `quantity ${quantity.value}`)
