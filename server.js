@@ -51,7 +51,7 @@ const collectionName='inventory'
 
             let part='delete part placeholder'
 
-            part=request.body.part
+            part=request.body.partnumber
             
            
             console.log(request.body)
@@ -67,43 +67,55 @@ const collectionName='inventory'
             if(cursor.length){
             //if part exists delete it
                 const result = await collection.deleteOne({
-                    'partnumber' : part
+                    'partnumber':part
                 })
+
+                console.log(`deleting`)
                 console.log(result)
                 response.status(200).send({deleted:{ cursor}})
                 response.end()
+                // response.redirect('/')
+                
             }
 
             else{
             //else item not in the database so do nothing
 
-               
+               console.log(`not in database`)
                 response.send({no_such_item:part})
                 response.end()
             }
+            
 
         })//end of delete
             
         
+ 
         
+
+
+
+
             //add new partnumber to inventory
         app.post('/inventory', async (request, response)=>{
-
+            console.log(`post recieved`)
             let part='new part placeholder',
             newModel= 'new model placeholder',
             newQuantity = 0
 
-            part=request.body.part
-            newModel= request.body.model
+            part=request.body.part.trim()
+            newModel= request.body.model.trim()
             newQuantity = request.body.quantity
 
-            console.log(request.body)
+           
             //build object from form values
             const newItem ={
                 partnumber:part,
                 model:newModel,
                 instock:newQuantity,
             }
+
+            console.log(newItem)
 
            
             //search collection for part
@@ -189,12 +201,18 @@ const collectionName='inventory'
                         upsert: false
                     }
                 )
+                console.log('success at put')
               
-               response.redirect('/')
+                
+            //    response.redirect('/')
+               
             } 
             catch (error) {
+                console.log('error at put')
+                
                 response.sendStatus(404);
                 response.end()
+                throw new Error(`error at put ${err}`)
             }
         })// end of put /inventory
    

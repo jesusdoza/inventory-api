@@ -18,9 +18,11 @@
 		<form action="/inventory" method="POST">
 
 			<legend>add new partnumber</legend>
-				<input type="text" placeholder="part number" required name="part" id="newPart">
-				<input type="text" placeholder="engine model" required name="part" id="newModel">
-				<input type="number" placeholder="#" name="quantity" id="newQuantity" min="0" max="20" >
+				<input type="text" placeholder="part number"  name="part" id="newPart" required>
+
+				<input type="text" placeholder="engine model" name="model" id="newModel" required >
+
+				<input type="number"  name="quantity" id="newQuantity" min="0" max="20"  value="0">
 				<button type="submit"> send</button>	
 		</form>
 
@@ -29,7 +31,7 @@
 
 		<section>
 			<h3>inventory numbers:</h3>
-			<button id="update" class="update_inventory">update inventory</button>
+			<button id="update" class="update_inventory">Update All Inventory</button>
 		</section>
 		
 		<!-- inventory list -->
@@ -47,33 +49,54 @@
 
 				<!-- partnumber entry into DOM -->
 					<section class="part-info" >
+						<!-- part number -->
 						<span class="part_id"><%= inventory[i].partnumber %></span>
+
+						<!-- engine model  -->
 						<span class="model_id"><%= inventory[i].model %></span>
+
+						<!-- quantity changed requested -->
 						<input class="quantity" type="number" value=<%= inventory[i].instock %>>
+
+						<!-- current quantity in api -->
 						<span>instock: <span class="instock"><%= inventory[i].instock %></span> </span>
 						</input>
 						
 					</section>
-					<section>
-						<button  data-button="add-button">
-							increase amount
-						</button>
-				
-						<button  data-button="reduce-button">
-							reduce amount
-						</button>
-					</section>
-					<section>
-						<button >
 
-						</button>
+					<section class="delete-sect">
+						<details>
+							<summary>delete</summary>
+							<button data-button="delete-button">
+								delete
+							</button>
+						</details>		
+					</section>
+
+					<section class="controls">
+						<section class="update">
+							<button data-button="add-button">
+								increase amount
+							</button>
+					
+							<button data-button="reduce-button">
+								reduce amount
+							</button>
+						</section>
+					
+						<section class="update">
+							<button data-button="update-button">
+								update
+							</button>
+						</section>
 					</section>
 					
 				</li>
 				
 
 			<% } %>
-		</ol>
+		</ol> 
+		<!-- end of part listing -->
 			
 		
 

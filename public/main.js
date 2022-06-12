@@ -29,7 +29,7 @@ update.addEventListener('click',(event)=>{
     //what items where changed and need update
     const itemsNeedUpdate = itemsChanged(inventory);
 
-    updateItems(itemsNeedUpdate);
+    updateAllItems(itemsNeedUpdate);
 })
 
 
@@ -39,12 +39,13 @@ update.addEventListener('click',(event)=>{
 // FUNCTIONS
 // =============================================================
 
-// update items
-async function updateItems(list_){
+// update all items
+// =================================
+async function updateAllItems(list_){
     
     //loop through the list and make array of fetches
     list_.forEach(async (element) => {
-        let responseArr=[]
+        // let responseArr=[]
         const part = element.querySelector('.part_id').innerText
         const model = element.querySelector('.model_id').innerText
         const quantity = +element.querySelector('.quantity').value
@@ -53,23 +54,23 @@ async function updateItems(list_){
         console.log(`fetch`)
         console.log(` ${part}:: ${model}:: ${quantity} `)
        
-         const response = await fetch('/inventory',{
-                method: 'PUT',
-                headers: {'Content-Type':'application/json'},
-                body:JSON.stringify({
-                    "partnumber":part,
-                    "model":model,
-                    "instock":quantity,
-               })
-            })
+        const updateObj={
+            "partnumber":part,
+            "model":model,
+            "instock":quantity,
+       }
 
-        const data = await response.json();
-        responseArr.push(data);
-       
-           
-           
-        
-        
+       //update entry at api
+       updateSingle(updateObj)
+
+        //  const response = await fetch('/inventory',{
+        //         method: 'PUT',
+        //         headers: {'Content-Type':'application/json'},
+        //         body:JSON.stringify(updateObj)
+        //     })
+
+        // const data = await response.json();
+        // responseArr.push(data);
     });
     
     location.reload();
@@ -78,8 +79,32 @@ async function updateItems(list_){
 
 
 
+//update single entry at api
+// ======================================================
+async function updateSingle(obj_){
+    let responseArr=[]
+    console.log(`updating single`)
+
+    let response = await fetch('/inventory',{
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify(obj_)
+    })
+
+    // const data = await response.json();
+
+    // responseArr.push(data);
+    // console.log(data)
+
+    console.log(response)
+    console.log(`reload`)
+    location.reload();
+}
+
+
+
 // what items had there quantities changed?
-//gets all items and filters out
+// =========================================================
 function itemsChanged(list_){
     let newList=[];
     let checklist= list_
@@ -101,22 +126,32 @@ function itemsChanged(list_){
 
 
 
-//change inventory number locally to later send 
+//event listener function for all buttons inside a partnumber listing
+// ===================================================================
 function changeInventory(event_){
     const target = event_.target
-        console.log(event_.target)
+        // console.log(event_.target)
 
-    //what item row was clicked
+        // get parent element of the item clicked on
     const item = event_.target.closest('.partnumber')
-        // console.log(`item is`)
-        // console.log( item)
+       
 
-    //quantity of stock
+        //quantity of stock
     const quantity = item.querySelector("input[type=number]")
 
-    //partnumber to use later to search database
+        //partnumber to use later to search database
     const part_id = item.querySelector('.part_id').innerText
-        console.log(part_id)
+        // console.log(part_id)
+
+        //model description
+    const model_id = item.querySelector('.model_id').innerText
+
+
+    const updatedObj={
+        "partnumber":part_id,
+        "model":model_id,
+        "instock":quantity.value,
+    }
 
     test = target.dataset.button;
     //  switch (target.id) {
@@ -140,6 +175,27 @@ function changeInventory(event_){
                 quantity.value= +quantity.value + 1
                 console.log( `quantity ${quantity.value}`)
                 break;
+
+        case 'update-button':
+            console.log(`its update button`)
+            //get the partnumber and quantity to update
+        //    console.log(part_id)
+        //    console.log(model_id)
+        //    console.log(quantity.value)
+           
+
+           updateSingle(updatedObj)
+           
+            location.reload()
+            break;
+
+        case 'delete-button':
+            console.log(`its delete button`)
+           
+            
+            deletePart(updatedObj)
+            
+            break;
          
         default:
             console.log(`nothing wanted clicked`)
@@ -150,6 +206,19 @@ function changeInventory(event_){
 
 
 
+async function deletePart(obj_){
+    let responseArr=[]
+
+    let response = await fetch('/inventory',{
+        method: 'delete',
+        headers: {'Content-Type':'application/json'},
+        body:JSON.stringify(obj_)
+    })
+
+    console.log(response);
+    location.reload()
+
+}
 
 
 
@@ -157,3 +226,157 @@ function changeInventory(event_){
 
 
 
+
+
+// let databasebackup = [
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86de"),
+//       partnumber: '3618046',
+//       model: 'Celect',
+//       instock: '10'
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e1"),
+//       partnumber: '3408303',
+//       model: 'Celect Plus',
+//       instock: 7
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e2"),
+//       partnumber: '3408300',
+//       model: 'Celect Plus',
+//       instock: 7
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e3"),
+//       partnumber: '3096662',
+//       model: 'Celect Plus',
+//       instock: '6'
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e4"),
+//       partnumber: '3944105',
+//       model: 'ISC',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86df"),
+//       partnumber: '3619037',
+//       model: 'Celect',
+//       instock: 5
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e7"),
+//       partnumber: 3945868,
+//       model: 'ISB',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e0"),
+//       partnumber: '3614473',
+//       model: 'Celect',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e8"),
+//       partnumber: 3990517,
+//       model: 'ISB',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e9"),
+//       partnumber: 3942858,
+//       model: 'ISB',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86ea"),
+//       partnumber: 3942335,
+//       model: 'ISB',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86eb"),
+//       partnumber: 3492860,
+//       model: 'ISB',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86ec"),
+//       partnumber: 3682729,
+//       model: 'ISX EGR',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86ed"),
+//       partnumber: 3683289,
+//       model: 'ISX EGR',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86ee"),
+//       partnumber: 3684009,
+//       model: 'ISX EGR',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86ef"),
+//       partnumber: 3684275,
+//       model: 'ISX EGR',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f0"),
+//       partnumber: 4921776,
+//       model: 'ISX',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f1"),
+//       partnumber: 3681404,
+//       model: 'ISX/ISM',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f2"),
+//       partnumber: 3681405,
+//       model: 'ISX/ISM',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f3"),
+//       partnumber: 3408501,
+//       model: 'ISX/ISM',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f5"),
+//       partnumber: 3408426,
+//       model: 'ISX NON EGR',
+//       instock: 1
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e5"),
+//       partnumber: '3944125',
+//       model: 'ISC',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86e6"),
+//       partnumber: 3944124,
+//       model: 'ISB',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f6"),
+//       partnumber: 3103533,
+//       model: 'ISX NON EGR',
+//       instock: 0
+//     },
+//     {
+//       _id: new ObjectId("62a154031f1148ad397e86f4"),
+//       partnumber: 3680509,
+//       model: 'ISX NON EGR',
+//       instock: 0
+//     }
+// ]
