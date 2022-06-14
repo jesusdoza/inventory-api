@@ -17,16 +17,19 @@
 		<h1>Inventory</h1>
 
 		<!-- add new part to inventory form -->
-		<form action="/inventory" method="POST">
+		<section >
+			<form  action="/inventory" method="POST">
 
-			<legend>add new partnumber</legend>
-				<input type="text" placeholder="part number"  name="part" id="newPart" required>
-
-				<input type="text" placeholder="engine model" name="model" id="newModel" required >
-
-				<input type="number"  name="quantity" id="newQuantity" min="0" max="20"  value="0">
-				<button type="submit"> send</button>	
-		</form>
+				<h4>add new partnumber</h4>
+					<input type="text" placeholder="part number"  name="part" id="newPart" required>
+	
+					<input type="text" placeholder="engine model" name="model" id="newModel" required >
+	
+					<input type="number"  name="quantity" id="newQuantity" min="0" max="20"  value="0">
+					<button type="submit"> send</button>	
+			</form>
+		</section>
+		
 
 
 

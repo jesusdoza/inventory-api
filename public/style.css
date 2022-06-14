@@ -4,17 +4,20 @@
     
 }
 
-/* body, html{
-    width: 100%;
-    border: red solid 2px;
-    display: block;
-} */
+
+
+body{
+   width: 100%;
+   padding: 2px;
+}
 
 input{
     width: 100%;
+   
 }
 
 h1{
+    
     color:rgb(54, 116, 145);
 }
 body{
@@ -40,6 +43,10 @@ button:active{
 
 
 /* typography */
+
+h1{
+    font-size: 1.5rem;
+}
 input{
     font-size: 3rem;
 }
@@ -63,7 +70,13 @@ li{
 
 
 
+
+
 /* STYLES */
+
+.add-part{
+    background-color: aquamarine;
+}
 .good-stock{
     background-color: rgb(102, 174, 69);
 }
@@ -101,8 +114,7 @@ li{
     .model_id,
     .quantity{
         width: 100%;
-        
-        /* background-color: aqua; */
+       
     }
 
     .part_id{
