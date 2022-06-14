@@ -100,12 +100,14 @@ li{
     .part_id,
     .model_id,
     .quantity{
-        width: 24%;
+        width: 100%;
         
         /* background-color: aqua; */
     }
 
-
+    .part_id{
+        background-color: rgb(105, 135, 135);
+    }
     .delete-sect{
         display: inline-block;
         width: 20%;
