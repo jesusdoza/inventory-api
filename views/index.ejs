@@ -4,12 +4,14 @@
     	<meta charset="utf-8">
     	<meta name="description" content="This is where your description goes">
     	<meta name="keywords" content="one, two, three">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<title>Title in the tab</title>
 
 		<!-- external CSS link -->
-		<!-- <link rel="stylesheet" href="css/normalize.css">-->
+		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="style.css"> 
+
 	</head>
 	<body>
 		<h1>Inventory</h1>
@@ -48,48 +50,68 @@
 
 
 				<!-- partnumber entry into DOM -->
+				
 					<section class="part-info" >
 						<!-- part number -->
-						<span class="part_id"><%= inventory[i].partnumber %></span>
-
+						<div class="part_id">
+							<span ><%= inventory[i].partnumber %></span>
+						</div>
+						
 						<!-- engine model  -->
-						<span class="model_id"><%= inventory[i].model %></span>
+						<div class="model_id">
+							<span ><%= inventory[i].model %></span>
+						</div>
+						
+						
 
 						<!-- quantity changed requested -->
-						<input class="quantity" type="number" value=<%= inventory[i].instock %>>
+						<div class="quantity">
+							<input type="number" value=<%= inventory[i].instock %>></input>
+						</div>
+						
 
 						<!-- current quantity in api -->
-						<span>instock: <span class="instock"><%= inventory[i].instock %></span> </span>
-						</input>
+						<div class="instock">
+							<span>instock: <span ><%= inventory[i].instock %></span> </span>
+						</div>
 						
-					</section>
+						
+						
+					</section><!--
+					  
 
-					<section class="delete-sect">
-						<details>
-							<summary>delete</summary>
-							<button data-button="delete-button">
-								delete
-							</button>
-						</details>		
-					</section>
+					--><div class="controls">
+						<section class="delete-sect">
+							<details>
+								<summary>delete</summary>
+								<button data-button="delete-button">
+									delete
+								</button>
+							</details>		
+						</section>
+	
+						<section class="">
+							<section class="inventory-change">
+								<button data-button="add-button">
+									increase amount
+								</button><!--
+								
+						
+								  --><button data-button="reduce-button">
+									reduce amount
+								</button>
+							</section>
+						
+							<section class="delete">
+								<button data-button="update-button">
+									update
+								</button>
+							</section>
+						</section>
+					</div>
 
-					<section class="controls">
-						<section class="update">
-							<button data-button="add-button">
-								increase amount
-							</button>
+
 					
-							<button data-button="reduce-button">
-								reduce amount
-							</button>
-						</section>
-					
-						<section class="update">
-							<button data-button="update-button">
-								update
-							</button>
-						</section>
-					</section>
 					
 				</li>
 				

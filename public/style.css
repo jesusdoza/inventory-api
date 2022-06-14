@@ -1,12 +1,41 @@
 *{
     box-sizing: border-box;
+    margin: 0;
+    
 }
+
+/* body, html{
+    width: 100%;
+    border: red solid 2px;
+    display: block;
+} */
+
+input{
+    width: 100%;
+}
+
 h1{
     color:rgb(54, 116, 145);
 }
 body{
     font-size: 2rem;
+   
 }
+
+section, form{
+    border: 3px green dashed;
+}
+
+button{
+    cursor: pointer;
+}
+button:hover{
+    background-color: rgb(183, 195, 205);
+}
+button:active{
+   background-color: green;
+}
+
 
 
 
@@ -16,7 +45,7 @@ input{
 }
 
 button{
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 li{
@@ -24,11 +53,17 @@ li{
     list-style: none;
     font-size: 3rem;
 }
+.delete-sect{
+    font-size: 1.5rem;
+}
 
 
 
 
 
+
+
+/* STYLES */
 .good-stock{
     background-color: rgb(102, 174, 69);
 }
@@ -39,10 +74,15 @@ li{
     background-color: rgb(174, 97, 69);
 }
 
+.partnumber{
+    border-radius: 10px;
+
+}
 
 ol{
     margin: 0;
     padding:0;
+    width: 100%;
 }
 
 li{
@@ -52,37 +92,41 @@ li{
     background-color: rgb(102, 174, 69);
     padding: 5px;
     margin: 5px 0;
-    height: 300px;
+    min-height: 300px;
     
 }
 
-    li span{
-    
-        display: inline-block;
-        width: 30%;
+  
+    .part_id,
+    .model_id,
+    .quantity{
+        width: 24%;
+        
+        /* background-color: aqua; */
     }
+
 
     .delete-sect{
         display: inline-block;
         width: 20%;
     }
-    .controls{
-        width: 70%;
-        border: black 1px solid;
-        display: inline-block;
-        text-align: center;
-    }
-    .update{
-        width: 50%;
-        border: black 1px solid;
-        display: inline-block;
-        text-align: center;
-    }
 
 
 
 
 
+   
+      
+        .inventory-change button{
+            width: 49%;
+            display: inline-block;
+        }
+        .inventory-change button::selection{
+            background-color: aqua;
+        }
 
-/* STYLE */
+
+
+
+
 
