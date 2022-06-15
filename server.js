@@ -204,8 +204,8 @@ const collectionName='inventory'
                 )
                 console.log('success at put')
               
-                
-               response.redirect('/')
+                response.status(200).end()
+                // response.redirect('/') //good
                
             } 
             catch (error) {

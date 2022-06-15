@@ -72,8 +72,8 @@ async function updateAllItems(list_){
         // const data = await response.json();
         // responseArr.push(data);
     });
-    
-    location.reload();
+    alert('look at console')
+    // location.reload();//good
 }
 
 
@@ -82,41 +82,43 @@ async function updateAllItems(list_){
 //update single entry at api
 // ======================================================
 async function updateSingle(obj_){
-    let responseArr=[]
+  
     console.log(`updating single`)
 
-    let response = await fetch('/inventory',{
-        method: 'PUT',
-        headers: {'Content-Type':'application/json'},
-        body:JSON.stringify(obj_)
-    })
-
-    // const data = await response.json();
-
-    // responseArr.push(data);
-    // console.log(data)
-
-    console.log(response)
-    console.log(`reload`)
-    // location.reload();
+    try{
+        let response = await fetch('/inventory',{
+            method: 'put',
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify(obj_)
+        })
+    
+        
+        console.log(`response was::`)
+        console.log(response)
+        console.log(`reload`)
+        alert('update single end')
+        location.reload();
+    }
+    catch(error){
+        console.log(error)
+    }
+    
 }
 
 
+
+// return object from .partnumber html element
 function makeEntryObj(htmlElement_){
 
     const part = `${htmlElement_.querySelector('.part_id').innerText}`
     const model = htmlElement_.querySelector('.model_id').innerText
-    const quantity = +htmlElement_.querySelector('.quantity input').value
+    const quantity = htmlElement_.querySelector('.quantity input').value
 
     obj = {
         partnumber: part,
         model: model,
         instock: quantity
     }
-
-    
-
-
     return obj
 }
 
@@ -170,16 +172,21 @@ function changeInventory(event_){
         //model description
     const model_id = item.querySelector('.model_id').innerText
 
+    const  updatedObj = makeEntryObj(item)
+    
+    // const  updatedObj ={
+    //     "partnumber":part_id,
+    //     "model":model_id,
+    //     "instock":quantity.value,
+    // }
 
-    const updatedObj={
-        "partnumber":part_id,
-        "model":model_id,
-        "instock":quantity.value,
-    }
+   
 
     test = target.dataset.button;
     //  switch (target.id) {
     switch (target.dataset.button) {
+
+            //reduce button
         case 'reduce-button':
                 console.log(`its reduce button`)
                 // console.log( `quantity ${quantity.value}`)
@@ -191,7 +198,9 @@ function changeInventory(event_){
                     // console.log( `quantity ${quantity.value}`)
                 }
                 break;
-        
+
+
+            //add button
         case 'add-button':
                 console.log(`its reduce button`)
                 console.log( `quantity ${quantity.value}`)
@@ -200,6 +209,8 @@ function changeInventory(event_){
                 console.log( `quantity ${quantity.value}`)
                 break;
 
+
+            //update button
         case 'update-button':
             console.log(`its update button`)
             //get the partnumber and quantity to update
@@ -207,12 +218,18 @@ function changeInventory(event_){
         //    console.log(model_id)
         //    console.log(quantity.value)
            
+           //was item changed 
+            const didItChange = itemsChanged([item]) //takes an array and returns array of any items that changed
+            
+            didItChange.length > 0 ? updateSingle(updatedObj) : console.log('nothing to update')
 
-           updateSingle(updatedObj)
-           
-            location.reload()
+            // updateSingle(updatedObj)
+            
+            // location.reload()
             break;
 
+
+            // delete button
         case 'delete-button':
             console.log(`its delete button`)
            
