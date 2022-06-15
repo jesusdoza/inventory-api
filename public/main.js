@@ -20,7 +20,7 @@ list.addEventListener('click', (event)=>{
 
 //event listener for update button
 updateAll.addEventListener('click',(event)=>{
-    alert('update all')
+    
     //get all inventory
     const inventory=document.querySelectorAll(".partnumber");
         // console.log(inventory);
@@ -72,7 +72,7 @@ async function updateAllItems(list_){
         // const data = await response.json();
         // responseArr.push(data);
     });
-    alert('look at console')
+    // alert('look at console')
     // location.reload();//good
 }
 
@@ -93,10 +93,9 @@ async function updateSingle(obj_){
         })
     
         
-        console.log(`response was::`)
-        console.log(response)
-        console.log(`reload`)
-        alert('update single end')
+        // console.log(`response was::`)
+        // console.log(response)
+        // console.log(`reload`)
         location.reload();
     }
     catch(error){
