@@ -1,7 +1,7 @@
 
 
 const list = document.querySelector('#inventory')
-const update = document.querySelector('#update')
+const updateAll = document.querySelector('#update-all')
 const inventory=document.querySelectorAll(".partnumber");
 
 let test
@@ -19,8 +19,8 @@ list.addEventListener('click', (event)=>{
 
 
 //event listener for update button
-update.addEventListener('click',(event)=>{
-
+updateAll.addEventListener('click',(event)=>{
+    alert('update all')
     //get all inventory
     const inventory=document.querySelectorAll(".partnumber");
         // console.log(inventory);
@@ -46,9 +46,9 @@ async function updateAllItems(list_){
     //loop through the list and make array of fetches
     list_.forEach(async (element) => {
         // let responseArr=[]
-        const part = element.querySelector('.part_id').innerText
+        const part = `${element.querySelector('.part_id').innerText}`
         const model = element.querySelector('.model_id').innerText
-        const quantity = +element.querySelector('.quantity').value
+        const quantity = +element.querySelector('.quantity input').value
 
         //do fetch update for all
         console.log(`fetch`)
@@ -98,26 +98,50 @@ async function updateSingle(obj_){
 
     console.log(response)
     console.log(`reload`)
-    location.reload();
+    // location.reload();
+}
+
+
+function makeEntryObj(htmlElement_){
+
+    const part = `${htmlElement_.querySelector('.part_id').innerText}`
+    const model = htmlElement_.querySelector('.model_id').innerText
+    const quantity = +htmlElement_.querySelector('.quantity input').value
+
+    obj = {
+        partnumber: part,
+        model: model,
+        instock: quantity
+    }
+
+    
+
+
+    return obj
 }
 
 
 
 // what items had there quantities changed?
 // =========================================================
-function itemsChanged(list_){
+function itemsChanged(htmlNodeList_){
     let newList=[];
-    let checklist= list_
+    let checklist= htmlNodeList_
 
 
-    //filter items that have not been changed
+    //filter html nodes list that have not been changed
     checklist.forEach((e)=>{
-        if( +e.querySelector('.quantity').value != +e.querySelector('.instock').innerText){
+        let instock = Number(e.querySelector('.instock span').innerText) ? Number(e.querySelector('.instock span').innerText) : 0 ;
+        let updateInstock =  Number(e.querySelector('.quantity input').value) ? Number(e.querySelector('.quantity input').value) : 0 ;
+
+        console.log(` ${updateInstock} ::: ${instock}  `)
+
+        if( instock != updateInstock ){
             newList.push(e)
             // console.log(`${e.querySelector('.quantity').value} ::: ${e.querySelector('.instock').innerText}  `)
         }
     })
-    // console.log(newList);
+    console.log(newList);
     //return new list with items needing update at database
    return newList;
 }
@@ -140,7 +164,7 @@ function changeInventory(event_){
     const quantity = item.querySelector("input[type=number]")
 
         //partnumber to use later to search database
-    const part_id = item.querySelector('.part_id').innerText
+    const part_id = String(item.querySelector('.part_id').innerText)
         // console.log(part_id)
 
         //model description

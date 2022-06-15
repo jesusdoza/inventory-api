@@ -153,7 +153,7 @@ const collectionName='inventory'
         app.get('/', async (request, response)=>{
             try{  
                 const allInventory = await collection.find().toArray()
-                console.log(allInventory)
+                // console.log(allInventory)
                 
                 // render index.ejs template passing in variable inventory holding allInventory
                 response.render('index.ejs',{inventory:allInventory})
@@ -170,6 +170,7 @@ const collectionName='inventory'
 
         //update single inventory amount entry
          app.put('/inventory', async (request, response)=>{
+            
             console.log(`received put request on server to update using`)
             console.log(request.body)
 
@@ -204,7 +205,7 @@ const collectionName='inventory'
                 console.log('success at put')
               
                 
-            //    response.redirect('/')
+               response.redirect('/')
                
             } 
             catch (error) {
