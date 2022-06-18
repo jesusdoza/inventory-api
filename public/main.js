@@ -97,7 +97,7 @@ async function updateSingle(obj_){
         // console.log(`response was::`)
         // console.log(response)
         // console.log(`reload`)
-        location.reload();
+        // location.reload();
     }
     catch(error){
         console.log(error)
@@ -115,8 +115,8 @@ function makeEntryObj(htmlElement_){
     let engineManufacturer =`engine-manufacturer`;
     
 
-     part = `${htmlElement_.querySelector('.part_id')?.innerText}`;
-     model = htmlElement_.querySelector('.model_id')?.innerText;
+     part = `${htmlElement_.querySelector('.part_id span')?.innerText}`;
+     model = htmlElement_.querySelector('.model_id span')?.innerText;
      quantity = htmlElement_.querySelector('.quantity input')?.value;
      engineManufacturer = htmlElement_.querySelector('.engine_man')?.innerText;
 
@@ -218,7 +218,7 @@ function changeInventory(event_){
                 break;
 
 
-            //update button
+            //update button local to entry
         case 'update-button':
             console.log(`its update button`)
             //get the partnumber and quantity to update
@@ -233,7 +233,7 @@ function changeInventory(event_){
 
             // updateSingle(updatedObj)
             
-            // location.reload()
+            location.reload()
             break;
 
 
@@ -248,6 +248,7 @@ function changeInventory(event_){
          
         default:
             console.log(`nothing wanted clicked`)
+            console.dir(updatedObj)
             break;
      }
 }
