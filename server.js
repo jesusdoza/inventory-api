@@ -101,8 +101,8 @@ const collectionName='inventory'
                 )
                 console.log('success at api/addtoall', result)
             
-                response.status(200).end()
-                // response.redirect('/') //good
+                // response.status(200).end()
+                response.redirect('/') //good
             
             } 
             catch (error) {
