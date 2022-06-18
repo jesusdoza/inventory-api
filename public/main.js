@@ -84,6 +84,7 @@ async function updateAllItems(list_){
 async function updateSingle(obj_){
   
     console.log(`updating single`)
+    console.log(obj_)
 
     try{
         let response = await fetch('/inventory',{
@@ -108,15 +109,23 @@ async function updateSingle(obj_){
 
 // return object from .partnumber html element
 function makeEntryObj(htmlElement_){
+    let part = `part-number`;
+    let model = `model-number`;
+    let quantity = 0;
+    let engineManufacturer =`engine-manufacturer`;
+    
 
-    const part = `${htmlElement_.querySelector('.part_id').innerText}`
-    const model = htmlElement_.querySelector('.model_id').innerText
-    const quantity = htmlElement_.querySelector('.quantity input').value
+     part = `${htmlElement_.querySelector('.part_id')?.innerText}`;
+     model = htmlElement_.querySelector('.model_id')?.innerText;
+     quantity = htmlElement_.querySelector('.quantity input')?.value;
+     engineManufacturer = htmlElement_.querySelector('.engine_man')?.innerText;
+
 
     obj = {
         partnumber: part,
         model: model,
-        instock: quantity
+        instock: quantity,
+        engine: engineManufacturer
     }
     return obj
 }

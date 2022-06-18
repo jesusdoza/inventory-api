@@ -74,6 +74,14 @@ li{
 
 /* STYLES */
 
+.hidden{
+    visibility: hidden;
+    min-height: 0px;
+    height: 0px;
+    margin: 0;
+    padding: 0;
+}
+
 .add-part{
     background-color: aquamarine;
 }

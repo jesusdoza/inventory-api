@@ -45,6 +45,82 @@ const collectionName='inventory'
 
 
 
+
+
+
+
+
+
+        //add another property to all entries that match a query
+        app.post('/api/addtoall', async (request, response)=>{
+                    
+      
+            console.log(`request body is: `,request.body);
+
+            // {will receive json object from client
+            //     propertyAdd : 'property name',
+            //     propertyValue : 'value',
+            //     targetSelector : 'partnumber',
+            //     targetValue:'target value'
+            // }
+
+            //what to add
+            const propertyAdd = request.body.propertyAdd.trim(); //new property to add
+            const propertyValue = request.body.propertyValue.trim(); // value of new property
+            const targetSelector = request.body.targetSelector.trim(); //select only specific entries with property
+            const targetValue = request.body.targetValue.trim(); // select only properties with this value
+
+            console.log(propertyAdd,propertyValue,targetSelector,targetValue)
+
+        //     //{ //EXAMPLE OBJECT STRUCTURE
+        //     //  new-property : 'property'
+        //     //}
+
+            try {
+                // find specific entry
+                const result = await collection.findOneAndUpdate(
+                    //query
+                    {     
+                        //empty query selects all //computed object property name
+                         
+                            [targetSelector]:targetValue
+                        
+                        
+                    },
+                    
+                    {// add field
+                        $set : {
+                            [propertyAdd] : propertyValue
+                        }
+                    }
+                // ,
+                //     //options
+                //     {   //if query does not find anything insert it as new partnumber
+                //         upsert: false
+                //     }
+                )
+                console.log('success at api/addtoall', result)
+            
+                response.status(200).end()
+                // response.redirect('/') //good
+            
+            } 
+            catch (error) {
+                
+                response.sendStatus(404);
+                response.end()
+                throw new Error(`error at api/addtoall ${error}`)
+            }
+        })// end of PUT add another property to all entries that match a query
+
+
+
+
+
+
+
+
+
         //delete one item
         app.delete('/inventory', async (request, response)=>{
             console.log('delete recieved')
@@ -85,8 +161,6 @@ const collectionName='inventory'
                 response.send({no_such_item:part})
                 response.end()
             }
-            
-
         })//end of delete
             
         
@@ -101,21 +175,28 @@ const collectionName='inventory'
             console.log(`post recieved`)
             let part='new part placeholder',
             newModel= 'new model placeholder',
-            newQuantity = 0
+            newQuantity = 0,
+            engineMan = 'manufacturer'
+
+                                                        console.log(`body at /inventory POST`)
+                                                        console.log(request.body)
 
             part=request.body.part.trim()
             newModel= request.body.model.trim()
             newQuantity = request.body.quantity
+            engineMan = request.body.engine_man.trim()
 
            
             //build object from form values
             const newItem ={
                 partnumber:part,
                 model:newModel,
+                manufacturer:engineMan,
                 instock:newQuantity,
             }
 
-            console.log(newItem)
+                                                        console.log(`new item at /inventory POST`)
+                                                        console.log(newItem)
 
            
             //search collection for part
@@ -123,7 +204,7 @@ const collectionName='inventory'
                 'partnumber' : part         
             }).toArray()
            
-            console.log(cursor.length)
+                                                         console.log(cursor.length)
 
             //of cursor is not [] empty then database already has item
             if(cursor.length){
@@ -139,11 +220,6 @@ const collectionName='inventory'
                 // response.send({inserted:newItem})
                 response.redirect('/')
             }
-
-           
-
-
-
         })//end post /inventory
 
 
@@ -153,7 +229,6 @@ const collectionName='inventory'
         app.get('/', async (request, response)=>{
             try{  
                 const allInventory = await collection.find().toArray()
-                // console.log(allInventory)
                 
                 // render index.ejs template passing in variable inventory holding allInventory
                 response.render('index.ejs',{inventory:allInventory})
@@ -164,6 +239,12 @@ const collectionName='inventory'
                 throw new Error(`error at root inventory load ${err}`)
             }
         })//end of get /
+
+
+
+
+
+
 
 
 
@@ -218,7 +299,8 @@ const collectionName='inventory'
         })// end of put /inventory
    
 
-    
+
+
 
 
 

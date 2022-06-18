@@ -17,18 +17,57 @@
 		<h1>Inventory</h1>
 
 		<!-- add new part to inventory form -->
-		<section >
-			<form  action="/inventory" method="POST">
 
-				<h4>add new partnumber</h4>
-					<input type="text" placeholder="part number"  name="part" id="newPart" required>
+		<details>
+			<summary>Add New Part Number</summary>
+			<section >
+				<form  action="/inventory" method="POST">
 	
-					<input type="text" placeholder="engine model" name="model" id="newModel" required >
+					<h4>add new partnumber</h4>
+						<input type="text" placeholder="part number"  name="part" id="newPart" required>
+		
+						<input type="text" placeholder="engine model" name="model" id="newModel" required >
 	
-					<input type="number"  name="quantity" id="newQuantity" min="0" max="20"  value="0">
-					<button type="submit"> send</button>	
-			</form>
-		</section>
+						<input type="text" placeholder="engine manufacturer" name="engine_man" id="newManufacturer" required >
+		
+						<input type="number"  name="quantity" id="newQuantity" min="0" max="20"  value="0">
+						<button type="submit"> send</button>	
+				</form>
+			</section>
+		</details>
+
+
+
+
+		<!-- add new property to all entrys matching-->
+		<details>
+			<summary>Add New property to all a partnumber</summary>
+			<section >
+				<form  action="/api/addtoall" method="POST">
+	
+					<h4>add property field</h4>
+					<label class="new-field" for="new-property">New Feild to add
+						<input type="text" placeholder="New Field to Insert"  name="propertyAdd" id="new-property" required>
+					</label>
+
+					<label class="new-field"for="new-value">New Field Value
+						<input type="text" placeholder="Number or Word" name="propertyValue" id="new-value" required >
+					</label>
+
+
+					<label for="target-select">Property to match
+						<input type="text" placeholder="partnumber" name="targetSelector" id="target-select" required >
+					</label>
+
+					<label for="target-value"> Value to match
+						<input type="text" placeholder="3618046" name="targetValue" id="target-value" required >
+					</label>
+	
+						<button type="submit"> send</button>	
+				</form>
+			</section>
+		</details>
+		
 		
 
 
@@ -57,11 +96,13 @@
 					<section class="part-info" >
 						<!-- part number -->
 						<div class="part_id">
+							<h5>Partnumber</h5>
 							<span ><%= inventory[i].partnumber %></span>
 						</div>
 						
 						<!-- engine model  -->
 						<div class="model_id">
+							<h5>Model</h5>
 							<span ><%= inventory[i].model %></span>
 						</div>
 						
@@ -69,6 +110,7 @@
 
 						<!-- quantity changed requested -->
 						<div class="quantity">
+							<h5>Quantity</h5>
 							<input type="number" disabled value=<%= inventory[i].instock %>></input>
 						</div>
 						
