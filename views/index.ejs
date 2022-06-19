@@ -6,7 +6,7 @@
     	<meta name="keywords" content="one, two, three">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<title>Title in the tab</title>
+		<title>Inventory</title>
 
 		<!-- external CSS link -->
 		<link rel="stylesheet" href="normalize.css">
@@ -14,7 +14,7 @@
 
 	</head>
 	<body>
-		<h1>Inventory</h1>
+		<h1>Inventory in Stock</h1>
 
 		<!-- add new part to inventory form -->
 
@@ -30,7 +30,7 @@
 	
 						<input type="text" placeholder="engine manufacturer" name="engine_man" id="newManufacturer" required >
 		
-						<input type="number"  name="quantity" id="newQuantity" min="0" max="20"  value="0">
+						<input type="number"  name="quantity" id="newQuantity" min="0" max="100"  value="0">
 						<button type="submit"> send</button>	
 				</form>
 			</section>
@@ -82,20 +82,28 @@
 		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
 
-				<%if(inventory[i].instock > 7){%>
-					<li class="partnumber good-stock" >
+				<!-- <%if(inventory[i].instock > 7){%>
+					
 				<%}else if(inventory[i].instock >= 4 ){%>
 					<li class="partnumber medium-stock">
 				<%}else{%>
 					<li class="partnumber low-stock">
-				<%} %>
+				<%} %> -->
 
 
 				<!-- partnumber entry into DOM -->
-				
+				<li class="partnumber" >
 					<section class="part-info" >
+						
 						<!-- part number -->
-						<div class="part_id">
+						<!-- <div class="part_id"> -->
+							<%if(inventory[i].instock > 7){%>
+								<div class="part_id good-stock" >
+							<%}else if(inventory[i].instock >= 4 ){%>
+								<div class="part_id medium-stock">
+							<%}else{%>
+								<div class="part_id low-stock">
+							<%} %>
 							<h5>Partnumber</h5>
 							<span ><%= inventory[i].partnumber %></span>
 						</div>
@@ -126,6 +134,8 @@
 					  
 
 					--><div class="controls">
+
+
 						<section class="delete-sect">
 							<details>
 								<summary>delete</summary>
@@ -133,21 +143,23 @@
 									delete
 								</button>
 							</details>		
-						</section>
+						</section><!--
+						 
 	
-						<section class="">
+						 --><section class="update">
+							<h5>Change inventory</h5>
 							<section class="inventory-change">
 								<button data-button="add-button">
 									increase amount
 								</button><!--
-								
-						
+
 								  --><button data-button="reduce-button">
 									reduce amount
 								</button>
 							</section>
 						
-							<section class="delete">
+
+							<section class="">
 								<button data-button="update-button">
 									update
 								</button>

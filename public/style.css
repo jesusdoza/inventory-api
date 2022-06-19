@@ -1,3 +1,19 @@
+
+:root{
+    --warning:rgb(251, 173, 5);
+    --add-partbg:#62cf83;
+    --deletebg:rgb(222, 79, 79);
+
+    --goodbg:rgb(119, 223, 119);
+    --medbg:rgb(190, 190, 9);
+    --lowbg:rgb(252, 137, 137);
+    
+    --entrybg:#007991;
+    --bodybg:#508AA8;
+    --info:#508AA8;
+}
+
+
 *{
     box-sizing: border-box;
     margin: 0;
@@ -6,9 +22,35 @@
 
 
 
+
+
+/*============================================
+ LAYOUT
+============================================ */
+
+
+.hidden{
+    visibility: hidden;
+    min-height: 0px;
+    height: 0px;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
 body{
    width: 100%;
-   padding: 2px;
+   padding: 5%;
+   background-color: var(--bodybg);
+
+}
+
+ol{
+    margin: 0;
+    padding:0;
+    width: 100%;
 }
 
 input{
@@ -16,17 +58,84 @@ input{
    
 }
 
-h1{
+li{  
+    width: 100%;
+    padding: 5px;
+    margin: 5% 0;
+    min-height: 300px;
     
-    color:rgb(54, 116, 145);
 }
-body{
-    font-size: 2rem;
-   
-}
+    .partnumber{
+
+        height: 100vh;
+    }   
+
+        .part-info{
+            height: 60%;
+            /* border: solid rgb(3, 30, 39) 1px */
+        }
+
+            .part_id,
+            .model_id,
+            .quantity{
+                width: 100%;
+            
+            }
+
+        .controls{
+            height: 40%;
+            /* border:rgb(109, 7, 7) solid 1px; */
+        }
+               
+            .delete-sect{
+                display: inline-block;
+                width: 100%;
+                height: 20%;
+                
+                vertical-align: top;
+            }
+
+
+            .update{
+                height:70%;
+                
+            }
+
+            .inventory-change{
+             
+               
+               display: flex;
+               justify-content: space-around;
+               align-items: center;
+                
+            }
+                .inventory-change button{
+                    width: 40%;
+                    display: inline-block;
+                    height: 100px;
+                    vertical-align: top;
+
+                    margin:0 5px;
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 section, form{
-    border: 3px green dashed;
+    /* border: 3px green dashed; */
 }
 
 button{
@@ -44,7 +153,14 @@ button:active{
 
 /* typography */
 
+
+body{
+    font-size: 2rem;
+   
+}
+
 h1{
+    text-align: center;
     font-size: 1.5rem;
 }
 input{
@@ -72,65 +188,50 @@ li{
 
 
 
-/* STYLES */
+/*============================================= 
+STYLES
+============================================ */
 
-.hidden{
-    visibility: hidden;
-    min-height: 0px;
-    height: 0px;
-    margin: 0;
-    padding: 0;
+
+
+.changed{
+    background-color: var(--warning);
 }
-
 .add-part{
     background-color: aquamarine;
 }
 .good-stock{
-    background-color: rgb(102, 174, 69);
+    background-color: var(--goodbg);
 }
 .medium-stock{
-    background-color: rgb(174, 169, 69);
+    background-color: var(--medbg);
 }
 .low-stock{
-    background-color: rgb(174, 97, 69);
+    background-color:var(--lowbg);
 }
+
+
+
+
+
 
 .partnumber{
     border-radius: 10px;
+    box-shadow: 2px 2px black;
+    background-color: var(--entrybg);
 
 }
 
-ol{
-    margin: 0;
-    padding:0;
-    width: 100%;
-}
-
-li{
-    
-    width: 100%;
-    border: gray 1px solid;
-    background-color: rgb(102, 174, 69);
-    padding: 5px;
-    margin: 5px 0;
-    min-height: 300px;
-    
-}
-
-  
-    .part_id,
-    .model_id,
-    .quantity{
-        width: 100%;
-       
+    .quantity input{
+        border-radius: 10px;
+        text-align: center;
     }
 
-    .part_id{
-        background-color: rgb(105, 135, 135);
-    }
-    .delete-sect{
-        display: inline-block;
-        width: 20%;
+
+
+
+    .update button{
+        border-radius: 100%;
     }
 
 
@@ -138,15 +239,24 @@ li{
 
 
    
-      
-        .inventory-change button{
-            width: 49%;
-            display: inline-block;
-        }
-        .inventory-change button::selection{
-            background-color: aqua;
-        }
+   
+    
+   
 
+   
+    .inventory-change button::selection{
+        background-color: aqua;
+    }
+
+
+
+
+
+
+
+   
+      
+    
 
 
 

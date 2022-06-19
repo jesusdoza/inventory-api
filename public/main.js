@@ -53,27 +53,14 @@ async function updateAllItems(list_){
         //do fetch update for all
         console.log(`fetch`)
         console.log(` ${part}:: ${model}:: ${quantity} `)
-       
-        const updateObj={
-            "partnumber":part,
-            "model":model,
-            "instock":quantity,
-       }
+    
+       const updateObj=makeEntryObj(element)
 
        //update entry at api
        updateSingle(updateObj)
-
-        //  const response = await fetch('/inventory',{
-        //         method: 'PUT',
-        //         headers: {'Content-Type':'application/json'},
-        //         body:JSON.stringify(updateObj)
-        //     })
-
-        // const data = await response.json();
-        // responseArr.push(data);
     });
-    // alert('look at console')
-    // location.reload();//good
+    
+    location.reload();//good
 }
 
 
@@ -92,15 +79,10 @@ async function updateSingle(obj_){
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify(obj_)
         })
-    
-        
-        // console.log(`response was::`)
-        // console.log(response)
-        // console.log(`reload`)
-        // location.reload();
+
     }
     catch(error){
-        console.log(error)
+        console.error(error)
     }
     
 }
@@ -113,19 +95,18 @@ function makeEntryObj(htmlElement_){
     let model = `model-number`;
     let quantity = 0;
     let engineManufacturer =`engine-manufacturer`;
-    
 
-     part = `${htmlElement_.querySelector('.part_id span')?.innerText}`;
-     model = htmlElement_.querySelector('.model_id span')?.innerText;
-     quantity = htmlElement_.querySelector('.quantity input')?.value;
-     engineManufacturer = htmlElement_.querySelector('.engine_man')?.innerText;
+     part = `${htmlElement_.querySelector('.part_id span').innerText}`;
+     model = htmlElement_.querySelector('.model_id span').innerText;
+     quantity = htmlElement_.querySelector('.quantity input').value;
+     engineManufacturer = htmlElement_.querySelector('.engine_man')?.innerText ?? engineManufacturer; //if .engine_man exists then get innertext property
 
 
     obj = {
         partnumber: part,
         model: model,
         instock: quantity,
-        engine: engineManufacturer
+        engineMake: engineManufacturer
     }
     return obj
 }
@@ -175,30 +156,23 @@ function changeInventory(event_){
 
         //partnumber to use later to search database
     const part_id = String(item.querySelector('.part_id').innerText)
-        // console.log(part_id)
 
         //model description
-    const model_id = item.querySelector('.model_id').innerText
+    // const model_id = item.querySelector('.model_id').innerText
 
     const  updatedObj = makeEntryObj(item)
-    
-    // const  updatedObj ={
-    //     "partnumber":part_id,
-    //     "model":model_id,
-    //     "instock":quantity.value,
-    // }
 
-   
 
-    test = target.dataset.button;
     //  switch (target.id) {
     switch (target.dataset.button) {
 
             //reduce button
         case 'reduce-button':
-                console.log(`its reduce button`)
-                // console.log( `quantity ${quantity.value}`)
-        
+                // console.log(`its reduce button`)
+                // console.dir(quantity)
+
+                quantity.classList.add('changed')
+
                 if(quantity.value<=0){
                     quantity.value=0
                 }else{
@@ -210,9 +184,11 @@ function changeInventory(event_){
 
             //add button
         case 'add-button':
-                console.log(`its reduce button`)
-                console.log( `quantity ${quantity.value}`)
+                // console.log(`its reduce button`)
+                // console.log( `quantity ${quantity.value}`)
                 
+                quantity.classList.add('changed')
+
                 quantity.value= +quantity.value + 1
                 console.log( `quantity ${quantity.value}`)
                 break;
@@ -221,18 +197,13 @@ function changeInventory(event_){
             //update button local to entry
         case 'update-button':
             console.log(`its update button`)
-            //get the partnumber and quantity to update
-        //    console.log(part_id)
-        //    console.log(model_id)
-        //    console.log(quantity.value)
            
            //was item changed 
             const didItChange = itemsChanged([item]) //takes an array and returns array of any items that changed
             
+            //if array returned something then update the items in array
             didItChange.length > 0 ? updateSingle(updatedObj) : console.log('nothing to update')
 
-            // updateSingle(updatedObj)
-            
             location.reload()
             break;
 
