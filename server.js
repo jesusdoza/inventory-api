@@ -23,8 +23,8 @@ const collectionName='inventory'
         
         app.use(cors());
         app.set('view engine', 'ejs'); // for template
-        app.use(bodyParser.urlencoded({extended:true})); //get body data
-        app.use(bodyParser.json());
+        app.use(express.urlencoded({extended:true})); //get body data
+        app.use(express.json());
         app.use(express.static('public')) //use templates from folder
 
 
@@ -70,11 +70,7 @@ const collectionName='inventory'
             const targetSelector = request.body.targetSelector.trim(); //select only specific entries with property
             const targetValue = request.body.targetValue.trim(); // select only properties with this value
 
-            console.log(propertyAdd,propertyValue,targetSelector,targetValue)
-
-        //     //{ //EXAMPLE OBJECT STRUCTURE
-        //     //  new-property : 'property'
-        //     //}
+            // console.log(propertyAdd,propertyValue,targetSelector,targetValue)
 
             try {
                 // find specific entry
@@ -283,7 +279,7 @@ const collectionName='inventory'
                         upsert: false
                     }
                 )
-                console.log('success at put')
+                console.log('success at /inventory put')
               
                 response.status(200).end()
                 // response.redirect('/') //good

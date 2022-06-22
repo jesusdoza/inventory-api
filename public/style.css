@@ -22,6 +22,51 @@
 
 
 
+/* typography */
+
+
+body{
+    font-size: 2rem;
+   
+}
+
+h1{
+    text-align: center;
+    font-size: 1.5rem;
+}
+input{
+    font-size: 3rem;
+}
+
+button{
+    font-size: 1.5rem;
+}
+
+li{
+    
+    list-style: none;
+    font-size: 3rem;
+}
+    .part_id{
+        font-size: 2.5rem;
+    }
+    .model_id{
+        font-size: 1.5rem;
+       
+    }   
+    .quantity{
+        font-size: 1.4rem;
+    }
+    .instock{
+        font-size: 2rem;
+    }
+    .delete-sect{
+        font-size: 1.5rem;
+    }
+
+
+
+
 
 
 /*============================================
@@ -71,14 +116,16 @@ li{
     }   
 
         .part-info{
-            height: 60%;
-            /* border: solid rgb(3, 30, 39) 1px */
+            min-height: 50%;
+            border: solid rgb(3, 30, 39) 1px
         }
 
             .part_id,
             .model_id,
             .quantity{
                 width: 100%;
+                background-color: rgb(164, 208, 208);
+                box-shadow:3px 3px black ;
             
             }
 
@@ -151,34 +198,6 @@ button:active{
 
 
 
-/* typography */
-
-
-body{
-    font-size: 2rem;
-   
-}
-
-h1{
-    text-align: center;
-    font-size: 1.5rem;
-}
-input{
-    font-size: 3rem;
-}
-
-button{
-    font-size: 1.5rem;
-}
-
-li{
-    
-    list-style: none;
-    font-size: 3rem;
-}
-.delete-sect{
-    font-size: 1.5rem;
-}
 
 
 
@@ -231,11 +250,20 @@ STYLES
 
 
     .update button{
-        border-radius: 100%;
+        border-radius: 30px;
     }
 
 
 
+    .inventory-change button::selection{
+        background-color: aqua;
+    }
+
+.delete-sect{
+    border: red 1px solid;
+    display: inline-block;
+    width: 40%;
+}
 
 
    
@@ -244,12 +272,7 @@ STYLES
    
 
    
-    .inventory-change button::selection{
-        background-color: aqua;
-    }
-
-
-
+   
 
 
 

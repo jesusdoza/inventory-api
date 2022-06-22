@@ -198,13 +198,26 @@ function changeInventory(event_){
         case 'update-button':
             console.log(`its update button`)
            
+
+            //get all inventory
+            const inventory=document.querySelectorAll(".partnumber");
+            // console.log(inventory);
+
+
+            //what items where changed and need update
+            const itemsNeedUpdate = itemsChanged(inventory);
+            updateAllItems(itemsNeedUpdate)
            //was item changed 
-            const didItChange = itemsChanged([item]) //takes an array and returns array of any items that changed
+            // const didItChange = itemsChanged([item]) //takes an array and returns array of any items that changed
             
             //if array returned something then update the items in array
-            didItChange.length > 0 ? updateSingle(updatedObj) : console.log('nothing to update')
+            // didItChange.length > 0 ? updateSingle(updatedObj) : console.log('nothing to update')
 
-            location.reload()
+            setTimeout(() => {
+                console.log(`timeout over`)
+                location.reload()
+            }, 500);
+           
             break;
 
 
