@@ -81,37 +81,41 @@
 		<!-- inventory list -->
 		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
-
-				<!-- <%if(inventory[i].instock > 7){%>
-					
-				<%}else if(inventory[i].instock >= 4 ){%>
-					<li class="partnumber medium-stock">
-				<%}else{%>
-					<li class="partnumber low-stock">
-				<%} %> -->
+				<%let {instock:instock,partnumber:partnumber,model:model,...leftover} = inventory[i]%>
 
 
 				<!-- partnumber entry into DOM -->
 				<li class="partnumber" >
 					<section class="part-info" >
+						<section>
+							<span>other crap</span>
+							<ul>
+							<%for (const key in leftover ){%>
+								<li>
+									<!-- insert left overkeys not used -->
+									<span><%=key%>: </span><span><%=leftover[key]%></span>
+								</li>
+							<%}%>
+							</ul>
+						</section>
 						
 						<!-- part number -->
 						<!-- <div class="part_id"> -->
-							<%if(inventory[i].instock > 7){%>
+							<%if(instock > 7){%>
 								<div class="part_id good-stock" >
-							<%}else if(inventory[i].instock >= 4 ){%>
+							<%}else if(instock >= 4 ){%>
 								<div class="part_id medium-stock">
 							<%}else{%>
 								<div class="part_id low-stock">
 							<%} %>
 							<h5>Partnumber</h5>
-							<span ><%= inventory[i].partnumber %></span>
+							<span ><%= partnumber %></span>
 						</div>
 						
 						<!-- engine model  -->
 						<div class="model_id">
 							<h5>Model</h5>
-							<span ><%= inventory[i].model %></span>
+							<span ><%= model %></span>
 						</div>
 						
 						
@@ -119,13 +123,13 @@
 						<!-- quantity changed requested -->
 						<div class="quantity">
 							<h5>Quantity</h5>
-							<input type="number" disabled value=<%= inventory[i].instock %>></input>
+							<input type="number" disabled value=<%=instock %>></input>
 						</div>
 						
 
 						<!-- current quantity in api -->
 						<div class="instock">
-							<p>instock: <span class=""><%= inventory[i].instock %></span> </p>
+							<p>instock: <span class=""><%= instock %></span> </p>
 						</div>
 						
 						

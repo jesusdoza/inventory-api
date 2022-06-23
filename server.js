@@ -224,6 +224,7 @@ const collectionName='inventory'
             //get inventory numbers
         app.get('/', async (request, response)=>{
             try{  
+                //get all inventory from database
                 const allInventory = await collection.find().toArray()
                 
                 // render index.ejs template passing in variable inventory holding allInventory
