@@ -45,8 +45,19 @@ button{
 li{
     
     list-style: none;
-    font-size: 3rem;
+    
 }
+    summary{
+        font-size: 1.2rem;
+    }
+  
+    details > *{
+        font-size: 1rem;
+    }
+
+        details span{
+            font-size: 1rem;
+        }
     .part_id{
         font-size: 2.5rem;
     }
@@ -109,16 +120,32 @@ li{
     margin: 5% 0;
     min-height: 300px;
     
-}
+}   
+    details li{
+        padding: 0;
+        margin: 0;
+        min-height: 2%;
+        /* font-size: 1rem; */
+    }
     .partnumber{
 
-        min-height: 100vh;
+        height: 100vh;
     }   
 
         .part-info{
-            min-height: 50%;
-            border: solid rgb(3, 30, 39) 1px
+            height: 60%;
+          
+            /* border: solid rgb(3, 30, 39) 1px */
         }
+
+           /* .part-info h5{
+                border: black 1px solid;
+                height: 5%;
+            } */
+            .part-info div{
+                border-radius: 10px;
+                margin: 3px auto;
+            }
 
             .part_id,
             .model_id,
@@ -143,8 +170,9 @@ li{
             }
 
 
-            .update{
-                height:70%;
+            .update-area{
+                height:100%;
+                /* border: 10px solid blue; */
                 
             }
 
@@ -154,6 +182,8 @@ li{
                display: flex;
                justify-content: space-around;
                align-items: center;
+               height: 50%;
+               /* border: 3px black solid; */
                 
             }
                 .inventory-change button{
@@ -165,6 +195,16 @@ li{
                     margin:0 5px;
                 }
 
+
+            .inventory-update{
+                height: 30%;
+                /* border: 3px black solid; */
+
+            }
+                .inventory-update button{
+                    height: 100%;
+                    
+                }
 
 
 
@@ -231,7 +271,10 @@ STYLES
 
 
 
-
+details{
+    background-color: #62cf83;
+    border-radius: 40px;
+}
 
 
 .partnumber{
@@ -248,12 +291,22 @@ STYLES
 
 
 
-
-    .update button{
+    /* all buttons in update section */
+    .update-area button{
         border-radius: 30px;
+        margin: 0 auto;
+       
     }
 
-
+    /* update inventory button section */
+    .inventory-update{
+       text-align: center;
+      
+    }
+        .inventory-update button{
+            width: 80%;
+            
+        }
 
     .inventory-change button::selection{
         background-color: aqua;

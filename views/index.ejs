@@ -81,22 +81,29 @@
 		<!-- inventory list -->
 		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
+				<!-- get specific properties interested in -->
 				<%let {instock:instock,partnumber:partnumber,model:model,...leftover} = inventory[i]%>
 
 
 				<!-- partnumber entry into DOM -->
 				<li class="partnumber" >
 					<section class="part-info" >
+
+						<!-- new section for leftover keys -->
 						<section>
-							<span>other crap</span>
-							<ul>
-							<%for (const key in leftover ){%>
-								<li>
-									<!-- insert left overkeys not used -->
-									<span><%=key%>: </span><span><%=leftover[key]%></span>
-								</li>
-							<%}%>
-							</ul>
+							<details>
+								<summary>extra properties</summary>
+								<h5>extra properties</h5>
+								<ul>
+								<%for (const key in leftover ){%>
+									<li>
+										<!-- insert left overkeys not used -->
+										<span><%=key%>: </span><span><%=leftover[key]%></span>
+									</li>
+								<%}%>
+								</ul>
+							</details>
+						
 						</section>
 						
 						<!-- part number -->
@@ -150,7 +157,7 @@
 						</section> -->
 						 
 	
-						 <section class="update">
+						 <section class="update-area">
 							<h5>Change inventory</h5>
 							<section class="inventory-change">
 								<button data-button="add-button">
@@ -163,7 +170,7 @@
 							</section>
 						
 
-							<section class="">
+							<section class="inventory-update">
 								<button data-button="update-button">
 									update
 								</button>

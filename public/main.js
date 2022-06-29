@@ -1,7 +1,7 @@
 
 
 const list = document.querySelector('#inventory')
-const updateAll = document.querySelector('#update-all')
+// const updateAll = document.querySelector('#update-all')
 const inventory=document.querySelectorAll(".partnumber");
 
 let test
@@ -19,18 +19,18 @@ list.addEventListener('click', (event)=>{
 
 
 //event listener for update button
-updateAll.addEventListener('click',(event)=>{
+// updateAll.addEventListener('click',(event)=>{
     
-    //get all inventory
-    const inventory=document.querySelectorAll(".partnumber");
-        // console.log(inventory);
+//     //get all inventory
+//     const inventory=document.querySelectorAll(".partnumber");
+//         // console.log(inventory);
 
 
-    //what items where changed and need update
-    const itemsNeedUpdate = itemsChanged(inventory);
+//     //what items where changed and need update
+//     const itemsNeedUpdate = itemsChanged(inventory);
 
-    updateAllItems(itemsNeedUpdate);
-})
+//     updateAllItems(itemsNeedUpdate);
+// })
 
 
 
