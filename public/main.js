@@ -224,8 +224,6 @@ function changeInventory(event_){
             // delete button
         case 'delete-button':
             console.log(`its delete button`)
-           
-            
             deletePart(updatedObj)
             
             break;

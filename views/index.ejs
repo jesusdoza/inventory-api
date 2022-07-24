@@ -82,7 +82,7 @@
 		<ol id="inventory">
 			<% for(let i =0; i<inventory.length; i++) {%>
 				<!-- get specific properties interested in -->
-				<%let {instock:instock,partnumber:partnumber,model:model,...leftover} = inventory[i]%>
+				<%let {instock:instock,partnumber:partnumber,model:model,...leftover} = inventory[i] %>
 
 
 				<!-- partnumber entry into DOM -->
@@ -147,14 +147,14 @@
 					--><div class="controls">
 
 
-						<!-- <section class="delete-sect">
+						<section class="delete-sect">
 							<details>
 								<summary>delete</summary>
 								<button data-button="delete-button">
 									delete
 								</button>
 							</details>		
-						</section> -->
+						</section>
 						 
 	
 						 <section class="update-area">
