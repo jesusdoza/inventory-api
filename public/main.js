@@ -43,8 +43,7 @@ list.addEventListener('click', (event)=>{
 // =================================
 async function updateAllItems(list_){
     
-    //loop through the list and make array of fetches
-    list_.forEach(async (element) => {
+   const updatePromises =  list_.map(async (element) => {
         // let responseArr=[]
         const part = `${element.querySelector('.part_id').innerText}`
         const model = element.querySelector('.model_id').innerText
@@ -59,6 +58,9 @@ async function updateAllItems(list_){
        //update entry at api
        updateSingle(updateObj)
     });
+
+    //
+    let results  = await Promise.allSettled(updatePromises)
     
     location.reload();//good
 }
