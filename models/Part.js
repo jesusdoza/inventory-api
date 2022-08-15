@@ -1,10 +1,14 @@
 const mongoose = require('mongoose')
 
-const ItemSchema = new mongoose.Schema({
+const PartSchema = new mongoose.Schema({
     partnumber:{
         type:String,
         require:true,
         unique:true,    
+    },
+    enginemake:{
+        type:String,
+        require:true, 
     },
     model:{
         type:String,
@@ -12,17 +16,23 @@ const ItemSchema = new mongoose.Schema({
     },
     instock:{
         type:Number,
+        default:1,
     },
     cores:{
         type:Number,
+        default:0,
     },
     warranty:{
         type:Number,
+        default:0,
     },
     problem:{
         type:Number,
+        default:0,
     },
 }, 
 {
     collection:"inventory"
 })
+
+module.exports = mongoose.model('Part', PartSchema)
