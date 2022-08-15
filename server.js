@@ -1,14 +1,14 @@
 // import modules
-
+const passport = require('passport')
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
-require('dotenv').config(); // to use with enviroment variables
+// require('dotenv').config('.'); // to use with enviroment variables
+dotenv.config({path:'./config/.env'});
 const PORT = 8000;
 const cors = require('cors');
 const { Collection } = require('mongodb');
 
-// const uri = `mongodb+srv://${secrets}@cluster0.losdw.mongodb.net/?retryWrites=true&w=majority`
 const uri = process.env.connectStr
 
 let db; //holds database
@@ -17,6 +17,9 @@ let collection ; //holds collection from database
 const dbName='Cata'
 const collectionName='inventory'
 
+
+//passport config
+const require('./config/passport')(passport)
 
 //instance of express
 const app = express();
