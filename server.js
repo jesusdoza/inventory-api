@@ -1,50 +1,57 @@
 // import modules
+
 const passport = require('passport')
 const express = require('express')
 const bodyParser= require('body-parser')
 const MongoClient = require('mongodb').MongoClient
-// require('dotenv').config('.'); // to use with enviroment variables
+dotenv = require('dotenv'); // to use with enviroment variables
 dotenv.config({path:'./config/.env'});
 const PORT = 8000;
 const cors = require('cors');
 const { Collection } = require('mongodb');
 
-const uri = process.env.connectStr
-
-let db; //holds database
-let collection ; //holds collection from database
-    
-const dbName='Cata'
-const collectionName='inventory'
+//database management
+const connectDB =  require('./config/db')
+    connectDB()
 
 
-//passport config
-const require('./config/passport')(passport)
+//variables
+// const uri = process.env.connectStr
+// let db; //holds database
+// let collection ; //holds collection from database
+// const dbName='Cata'
+// const collectionName='inventory'
+
+
+//passport config // todo passport config
+// const require('./config/passport')(passport)
+
+// models
+const User = require('./models/User') 
 
 //instance of express
 const app = express();
-
-app.use(cors());
-app.set('view engine', 'ejs'); // for template
-app.use(express.urlencoded({extended:true})); //get body data
-app.use(express.json());
-app.use(express.static('public')) //use templates from folder
-
+    app.use(cors());
+    app.set('view engine', 'ejs'); // for template
+    app.use(express.urlencoded({extended:true})); //get body data
+    app.use(express.json());
+    app.use(express.static('public')) //use templates from folder
 
 
 
 
 
-    //connect to mongo
-MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
-.then(  client =>{
-        //get database
-    db = client.db(dbName);
 
-        //get collection from database
-    collection = db.collection(collectionName)
+//     //connect to mongo
+// MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
+// .then(  client =>{
+//         //get database
+//     db = client.db(dbName);
 
-})
+//         //get collection from database
+//     collection = db.collection(collectionName)
+
+// })
 
 
 

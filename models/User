@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-const UserSchema = new mongoose.Schsema({
+const UserSchema = new mongoose.Schema({
     userId:{
         type:String,
         required:true,
@@ -21,7 +21,11 @@ const UserSchema = new mongoose.Schsema({
         type:String,
         default:'basic'
     }
-   
-})
+    
+},
+{
+    collection:"users"
+}
+)
 
 module.exports  = mongoose.model('User', UserSchema)
