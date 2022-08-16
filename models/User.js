@@ -9,8 +9,12 @@ const UserSchema = new mongoose.Schema({
         unique: true,
     },
     password:{
-        type:String,
+        type:Buffer,
         required:true,
+    },
+    salt:{
+        type:String,
+        require:true,
     },
     createdAt:{
         type:Date,
@@ -20,6 +24,10 @@ const UserSchema = new mongoose.Schema({
     role:{
         type:String,
         default:'basic'
+    },
+    version:{
+        type:Number,
+        default:1
     }
     
 },

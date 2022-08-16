@@ -21,7 +21,11 @@
 }
 
 
-
+.login-container{
+    width: 400px;
+    margin-top:50px;
+    text-align: center;
+}
 /* typography */
 
 
@@ -94,7 +98,11 @@ li{
 }
 
 
-
+.center-page {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
 
 body{
    width: 100%;

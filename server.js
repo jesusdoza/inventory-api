@@ -55,9 +55,10 @@ const app = express();
 
 
 
+const userRoutes = require('./routes/user')
 
 
-
+app.use(userRoutes)
 
 
 
