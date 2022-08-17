@@ -1,36 +1,71 @@
 // import modules
+const MongoClient = require('mongodb').MongoClient
+
+const session = require('express-session')
+const MongoStore  =require('connect-mongo')//session store
 
 const passport = require('passport')
 const express = require('express')
-const bodyParser= require('body-parser')
-const MongoClient = require('mongodb').MongoClient
+
 dotenv = require('dotenv'); // to use with enviroment variables
 dotenv.config({path:'./config/.env'});
+
 const PORT = 8000;
 const cors = require('cors');
 const { Collection } = require('mongodb');
 
-//database management
+//database management mongoose
 const connectDB =  require('./config/db')
     connectDB()
 
-
+// todo swap to database file or mongoose
 //variables
-// const uri = process.env.connectStr
-// let db; //holds database
-// let collection ; //holds collection from database
-// const dbName='Cata'
-// const collectionName='inventory'
+const uri = process.env.connectStr
+let db; //holds database
+let collection ; //holds collection from database
+const dbName='Cata'
+const collectionName='inventory'
 
 
-//passport config // todo passport config
-// const require('./config/passport')(passport)
+
+//authentication middleware
+const {ensureAuth,ensureGuest} = require('./middleware/auth')
+
+
 
 // models
 const User = require('./models/User') 
 
 //instance of express
 const app = express();
+
+
+    //!================================================
+    //passport config // todo passport config
+    require('./config/passport')(passport)
+
+    //Sessions
+    //express sessions must be before passport
+    app.use(session({
+        //! change secret
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: false, //dont create until something to save
+        store:MongoStore.create({
+            mongoUrl: process.env.connectStr,
+        }),
+    }))
+
+
+    //passport middleware
+    app.use(passport.initialize())
+    app.use(passport.session())
+
+
+    //!==================================================
+
+
+
     app.use(cors());
     app.set('view engine', 'ejs'); // for template
     app.use(express.urlencoded({extended:true})); //get body data
@@ -42,171 +77,25 @@ const app = express();
 
 
 
-//     //connect to mongo
-// MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
-// .then(  client =>{
-//         //get database
-//     db = client.db(dbName);
 
-//         //get collection from database
-//     collection = db.collection(collectionName)
+    //!connect to mongo
+MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
+.then(  client =>{
+        //get database
+    db = client.db(dbName);
 
-// })
+        //get collection from database
+    collection = db.collection(collectionName)
 
-
-
-const userRoutes = require('./routes/user')
+})
 
 
-app.use(userRoutes)
+////ROUTES FILES
+// const userRoutes = require('./routes/user-routes')
 
 
-
-//add another property to all entries that match a query
-app.post('/api/addtoall', async (request, response)=>{
-    console.log(`request body is: `,request.body);
-
-    // {will receive json object from client
-    //     propertyAdd : 'property name',
-    //     propertyValue : 'value',
-    //     targetSelector : 'partnumber',
-    //     targetValue:'target value'
-    // }
-
-    //what to add
-    const propertyAdd = request.body.propertyAdd.trim(); //new property to add
-    const propertyValue = request.body.propertyValue.trim(); // value of new property
-    const targetSelector = request.body.targetSelector.trim(); //select only specific entries with property
-    const targetValue = request.body.targetValue.trim(); // select only properties with this value
-    
-    try {
-        // find specific entry
-        const result = await collection.findOneAndUpdate(
-            //query
-            {     
-                //empty query selects all //computed object property name
-                    [targetSelector]:targetValue
-            },
-            {// add field
-                $set : {
-                    [propertyAdd] : propertyValue
-                }
-            }
-        )
-        console.log('success at api/addtoall', result)
-    
-        // response.status(200).end()
-        response.redirect('/')
-    } 
-    catch (error) {
-        
-        response.sendStatus(404);
-        response.end()
-        throw new Error(`error at api/addtoall ${error}`)
-    }
-})// end of PUT add another property to all entries that match a query
-
-
-
-
-//delete one item
-app.delete('/inventory', async (request, response)=>{
-    console.log('delete recieved')
-
-    let part='delete part placeholder'
-
-    part=request.body.partnumber
-    
-    
-    console.log(request.body)
-
-    //search collection for part
-    const cursor = await collection.find({ 
-        'partnumber' : part         
-    }).toArray()
-    
-    console.log(cursor)
-
-
-    if(cursor.length){
-    //if part exists delete it
-        const result = await collection.deleteOne({
-            'partnumber':part
-        })
-
-        console.log(result)
-        response.status(200).send({deleted:{ cursor}})
-        // response.redirect('/')
-        
-    }
-
-    else{
-    //else item not in the database so do nothing
-
-        console.log(`not in database`)
-        response.send({no_such_item:part})
-        response.end()
-    }
-})//end of delete
-    
-
-
-
-
-
-
-
-    //add new partnumber to inventory
-app.post('/inventory', async (request, response)=>{
-    console.log(`post recieved`)
-    let part='new part placeholder',
-    newModel= 'new model placeholder',
-    newQuantity = 0,
-    engineMan = 'manufacturer'
-
-                                                console.log(`body at /inventory POST`)
-                                                console.log(request.body)
-
-    part=request.body.part.trim()
-    newModel= request.body.model.trim()
-    newQuantity = request.body.quantity
-    engineMan = request.body.engine_man.trim()
-
-    
-    //build object from form values
-    const newItem ={
-        partnumber:part,
-        model:newModel,
-        manufacturer:engineMan,
-        instock:newQuantity,
-    }
-
-                                                console.log(`new item at /inventory POST`)
-                                                console.log(newItem)
-
-    
-    //search collection for part
-    const cursor = await collection.find({ 
-        'partnumber' : part         
-    }).toArray()
-    
-                                                    console.log(cursor.length)
-
-    //of cursor is not [] empty then database already has item
-    if(cursor.length){
-    //if part exists do not insert into database
-        response.status(409).send({error:{ newPart :part , problem:'already exists'}})
-    }
-
-    else{
-    //else newItem not in the database so insert it
-
-        await collection.insertOne(newItem)
-        // response.send({inserted:newItem})
-        response.redirect('/')
-    }
-})//end post /inventory
-
+//// ROUTES
+app.use('/user',require('./routes/user-routes'))
 
 
 
@@ -228,6 +117,146 @@ app.get('/', async (request, response)=>{
 
 
 
+// //add another property to all entries that match a query
+// app.post('/api/addtoall', async (request, response)=>{
+//     console.log(`request body is: `,request.body);
+
+//     // {will receive json object from client
+//     //     propertyAdd : 'property name',
+//     //     propertyValue : 'value',
+//     //     targetSelector : 'partnumber',
+//     //     targetValue:'target value'
+//     // }
+
+//     //what to add
+//     const propertyAdd = request.body.propertyAdd.trim(); //new property to add
+//     const propertyValue = request.body.propertyValue.trim(); // value of new property
+//     const targetSelector = request.body.targetSelector.trim(); //select only specific entries with property
+//     const targetValue = request.body.targetValue.trim(); // select only properties with this value
+    
+//     try {
+//         // find specific entry
+//         const result = await collection.findOneAndUpdate(
+//             //query
+//             {     
+//                 //empty query selects all //computed object property name
+//                     [targetSelector]:targetValue
+//             },
+//             {// add field
+//                 $set : {
+//                     [propertyAdd] : propertyValue
+//                 }
+//             }
+//         )
+//         console.log('success at api/addtoall', result)
+    
+//         // response.status(200).end()
+//         response.redirect('/')
+//     } 
+//     catch (error) {
+        
+//         response.sendStatus(404);
+//         response.end()
+//         throw new Error(`error at api/addtoall ${error}`)
+//     }
+// })// end of PUT add another property to all entries that match a query
+
+
+
+
+// //delete one item
+// app.delete('/inventory', async (request, response)=>{
+//     console.log('delete recieved')
+
+//     let part='delete part placeholder'
+
+//     part=request.body.partnumber
+    
+    
+//     console.log(request.body)
+
+//     //search collection for part
+//     const cursor = await collection.find({ 
+//         'partnumber' : part         
+//     }).toArray()
+    
+//     console.log(cursor)
+
+
+//     if(cursor.length){
+//     //if part exists delete it
+//         const result = await collection.deleteOne({
+//             'partnumber':part
+//         })
+
+//         console.log(result)
+//         response.status(200).send({deleted:{ cursor}})
+//         // response.redirect('/')
+        
+//     }
+
+//     else{
+//     //else item not in the database so do nothing
+
+//         console.log(`not in database`)
+//         response.send({no_such_item:part})
+//         response.end()
+//     }
+// })//end of delete
+    
+
+
+
+//     //add new partnumber to inventory
+// app.post('/inventory', async (request, response)=>{
+//     console.log(`post recieved`)
+//     let part='new part placeholder',
+//     newModel= 'new model placeholder',
+//     newQuantity = 0,
+//     engineMan = 'manufacturer'
+
+//                                                 console.log(`body at /inventory POST`)
+//                                                 console.log(request.body)
+
+//     part=request.body.part.trim()
+//     newModel= request.body.model.trim()
+//     newQuantity = request.body.quantity
+//     engineMan = request.body.engine_man.trim()
+
+    
+//     //build object from form values
+//     const newItem ={
+//         partnumber:part,
+//         model:newModel,
+//         manufacturer:engineMan,
+//         instock:newQuantity,
+//     }
+
+//                                                 console.log(`new item at /inventory POST`)
+//                                                 console.log(newItem)
+
+    
+//     //search collection for part
+//     const cursor = await collection.find({ 
+//         'partnumber' : part         
+//     }).toArray()
+    
+//                                                     console.log(cursor.length)
+
+//     //of cursor is not [] empty then database already has item
+//     if(cursor.length){
+//     //if part exists do not insert into database
+//         response.status(409).send({error:{ newPart :part , problem:'already exists'}})
+//     }
+
+//     else{
+//     //else newItem not in the database so insert it
+
+//         await collection.insertOne(newItem)
+//         // response.send({inserted:newItem})
+//         response.redirect('/')
+//     }
+// })//end post /inventory
 
 
 
