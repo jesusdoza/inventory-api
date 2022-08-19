@@ -1,10 +1,8 @@
 // packages
 const express = require('express')
-// const dataBase = require('../config/db');
+const router = express.Router()
 const User = require('../models/User')
-const crypto = require('crypto')
-// create router instance
-const router = express.Router();
+
 const passport = require('passport')
 const LocalStrategy = require('passport-local');
 require('../config/passport')(passport)

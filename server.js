@@ -1,48 +1,41 @@
-// import modules
-const MongoClient = require('mongodb').MongoClient
-
-const session = require('express-session')
-const MongoStore  =require('connect-mongo')//session store
-
-const passport = require('passport')
-const express = require('express')
-
-dotenv = require('dotenv'); // to use with enviroment variables
-dotenv.config({path:'./config/.env'});
-
-const PORT = 8000;
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const passport = require('passport');
+const MongoStore  =require('connect-mongo');//session store
+const flash = require('express-flash');
+const session = require('express-session');
+const logger = require('morgan');
 const cors = require('cors');
-const { Collection } = require('mongodb');
+
+
 
 //database management mongoose
-const connectDB =  require('./config/db')
-    connectDB()
 
-// todo swap to database file or mongoose
-//variables
-const uri = process.env.connectStr
-let db; //holds database
-let collection ; //holds collection from database
-const dbName='Cata'
-const collectionName='inventory'
+  
+require('dotenv').config({path:'./config/.env'});
+
+//passport
+require('./config/passport')(passport);
+
+const PORT = 8000;
+
+const connectDB =  require('./config/db');
+connectDB();
 
 
 
 //authentication middleware
-const {ensureAuth,ensureGuest} = require('./middleware/auth')
+const {ensureAuth,ensureGuest} = require('./middleware/auth');
 
 
+app.use(cors());
+app.set('view engine', 'ejs'); // for template
+app.use(express.static('public')); //use templates from folder
+app.use(express.urlencoded({extended:true})); //get body data
+app.use(express.json());
+app.use(logger('dev'));
 
-// models
-const User = require('./models/User') 
-
-//instance of express
-const app = express();
-
-
-    //!================================================
-    //passport config // todo passport config
-    require('./config/passport')(passport)
 
     //Sessions
     //express sessions must be before passport
@@ -66,13 +59,7 @@ const app = express();
 
 
 
-    app.use(cors());
-    app.set('view engine', 'ejs'); // for template
-    app.use(express.urlencoded({extended:true})); //get body data
-    app.use(express.json());
-    app.use(express.static('public')) //use templates from folder
-
-
+ 
 
 
 

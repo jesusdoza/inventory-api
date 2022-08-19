@@ -1,64 +1,33 @@
-
-//specify strategy to use with passport
-const LocalStrategy  = require('passport-local')
-
-const crypto = require('crypto');
-//user database
+const LocalStrategy = require('passport-local').Strategy
 const mongoose = require('mongoose')
 const User = require('../models/User')
 
-
-module.exports = async (passport)=>{
-    passport.use(new LocalStrategy(async function verify(username, password, cb) {
-      const salt = await crypto.randomBytes(256).toString('hex')
-      console.log(`user:`,username)
-      console.log('pass:', password)
-        try {
-          //find user if any
-          const user = await User.findOne({userId:username})
-          console.log(`user from database`, user)
-
-          if (!user) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-
-          crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-
-            console.log(`hassh =================`, hashedPassword)
-              //error was encountered
-              if (err) { return cb(err); }
-              
-              //if password verify fails
-              if (!crypto.timingSafeEqual(user.password, hashedPassword)) {
-                console.log(`password fail`)
-                return cb(null, false, { message: 'Incorrect username or password.' });//return false and message
-              }
-
-              //correct password was entered return user
-              return cb(null,user);
-            });
-
-        } catch (error) {
-          console.error('user lookup error',error);
-          return cb(error); 
+module.exports = function (passport) {
+  passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    User.findOne({ email: email.toLowerCase() }, (err, user) => {
+      if (err) { return done(err) }
+      if (!user) {
+        return done(null, false, { msg: `Email ${email} not found.` })
+      }
+      if (!user.password) {
+        return done(null, false, { msg: 'Your account was registered using a sign-in provider. To enable password login, sign in using a provider, and then set a password under your user profile.' })
+      }
+      user.comparePassword(password, (err, isMatch) => {
+        if (err) { return done(err) }
+        if (isMatch) {
+          return done(null, user)
         }
-        
-      
+        return done(null, false, { msg: 'Invalid email or password.' })
+      })
+    })
+  }))
+  
 
+  passport.serializeUser((user, done) => {
+    done(null, user.id)
+  })
 
-        passport.serializeUser(function(user, cb) {
-          process.nextTick(function() {
-            return cb(null, user._id);
-          });
-        });
-        
-        passport.deserializeUser(function(id, cb) {
-          process.nextTick(function() {
-            const foundUser = User.findById(id)
-            return cb(null, foundUser);
-          });
-        });
-        
-        
-      }));
-
-
+  passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => done(err, user))
+  })
 }
