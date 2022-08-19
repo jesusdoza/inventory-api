@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const Router  = require('express').Router();
 const inventoryController = require('../controllers/inventory')
 
 

@@ -6,7 +6,7 @@ module.exports.getInventory = async (req,res)=>{
     try {
         const allInventory = await Parts.find();
 
-        res.render('index.ejs',{inventory:allInventory})
+        res.render('inventory.ejs',{inventory:allInventory})
 
     } catch (error) {
         console.log(`error getting inventory`,error)

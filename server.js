@@ -9,13 +9,10 @@ const logger = require('morgan');
 const cors = require('cors');
 
 
-
-//database management mongoose
-
-  
+//enviroment vars
 require('dotenv').config({path:'./config/.env'});
 
-//passport
+// passport config
 require('./config/passport')(passport);
 
 const PORT = 8000;
@@ -37,17 +34,17 @@ app.use(express.json());
 app.use(logger('dev'));
 
 
-    //Sessions
-    //express sessions must be before passport
-    app.use(session({
-        //! change secret
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: false, //dont create until something to save
-        store:MongoStore.create({
-            mongoUrl: process.env.connectStr,
-        }),
-    }))
+//Sessions
+//express sessions must be before passport
+app.use(session({
+    //! change secret
+    secret: process.env.sessionSecret,
+    resave: false,
+    saveUninitialized: false, //dont create until something to save
+    store:MongoStore.create({
+        mongoUrl: process.env.connectStr,
+    }),
+}))
 
 
     //passport middleware
@@ -55,52 +52,39 @@ app.use(logger('dev'));
     app.use(passport.session())
 
 
-    //!==================================================
-
-
-
- 
-
-
-
-
-
-    //!connect to mongo
-MongoClient.connect(uri,{useUnifiedTopology: true, useUnifiedTopology: true,})
-.then(  client =>{
-        //get database
-    db = client.db(dbName);
-
-        //get collection from database
-    collection = db.collection(collectionName)
-
-})
 
 
 ////ROUTES FILES
-// const userRoutes = require('./routes/user-routes')
+const inventoryRoute = require('./routes/inventory')
 
 
 //// ROUTES
-app.use('/user',require('./routes/user-routes'))
+app.use('/inventory',inventoryRoute)
 
 
 
-    //get inventory numbers
-app.get('/', async (request, response)=>{
-    try{  
-        //get all inventory from database
-        const allInventory = await collection.find().toArray()
+
+
+app.listen(process.env.PORT || PORT, ()=>{
+    console.log(`server on ${PORT}`)
+})
+
+
+//     //get inventory numbers
+// app.get('/', async (request, response)=>{
+//     try{  
+//         //get all inventory from database
+//         const allInventory = await collection.find().toArray()
         
-        // render index.ejs template passing in variable inventory holding allInventory
-        response.render('index.ejs',{inventory:allInventory})
+//         // render index.ejs template passing in variable inventory holding allInventory
+//         response.render('index.ejs',{inventory:allInventory})
         
-        response.end()
-    }
-    catch(err){
-        throw new Error(`error at root inventory load ${err}`)
-    }
-})//end of get /
+//         response.end()
+//     }
+//     catch(err){
+//         throw new Error(`error at root inventory load ${err}`)
+//     }
+// })//end of get /
 
 
 
@@ -251,64 +235,60 @@ app.get('/', async (request, response)=>{
 
 
 
-//update single inventory amount entry
-    app.put('/inventory', async (request, response)=>{
+// //update single inventory amount entry
+//     app.put('/inventory', async (request, response)=>{
     
-    console.log(`received put request on server to update using`)
-    console.log(request.body)
+//     console.log(`received put request on server to update using`)
+//     console.log(request.body)
 
     
 
-//     //{ //EXAMPLE OBJECT STRUCTURE
-//     //  partnumber:3103533,
-//     //  model:'ISX NON EGR',
-//     //  instock:0,
-//     //}
+// //     //{ //EXAMPLE OBJECT STRUCTURE
+// //     //  partnumber:3103533,
+// //     //  model:'ISX NON EGR',
+// //     //  instock:0,
+// //     //}
 
-    try {
-        //find specific entry
-        const result = await collection.findOneAndUpdate(
-            //query
-            {      
-                partnumber : request.body.partnumber
+//     try {
+//         //find specific entry
+//         const result = await collection.findOneAndUpdate(
+//             //query
+//             {      
+//                 partnumber : request.body.partnumber
                 
-            },
+//             },
             
-            {// update
-                $set : {
-                    instock: request.body.instock
-                }
-            }
-            ,
-            //options
-            {   //if query does not find anything insert it as new partnumber
-                upsert: false
-            }
-        )
-        console.log('success at /inventory put')
+//             {// update
+//                 $set : {
+//                     instock: request.body.instock
+//                 }
+//             }
+//             ,
+//             //options
+//             {   //if query does not find anything insert it as new partnumber
+//                 upsert: false
+//             }
+//         )
+//         console.log('success at /inventory put')
         
-        response.status(200).end()
-        // response.redirect('/') //good
+//         response.status(200).end()
+//         // response.redirect('/') //good
         
-    } 
-    catch (error) {
-        console.log('error at put')
+//     } 
+//     catch (error) {
+//         console.log('error at put')
         
-        response.sendStatus(404);
-        response.end()
-        throw new Error(`error at put ${err}`)
-    }
-})// end of put /inventory
+//         response.sendStatus(404);
+//         response.end()
+//         throw new Error(`error at put ${err}`)
+//     }
+// })// end of put /inventory
    
 
 
 
 
 
-
-app.listen(process.env.PORT || PORT, ()=>{
-    console.log(`server on ${PORT}`)
-})
 
 
 
