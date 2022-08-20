@@ -56,10 +56,11 @@ app.use(session({
 
 ////ROUTES FILES
 const inventoryRoute = require('./routes/inventory')
-
+const loginRoutes = require('./routes/login')
 
 //// ROUTES
 app.use('/inventory',inventoryRoute)
+app.use ('/login', loginRoutes)
 
 
 

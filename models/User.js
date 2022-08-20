@@ -3,18 +3,15 @@ const bcrypt = require('bcrypt')
 
 
 const UserSchema = new mongoose.Schema({
-    userId:{
+    username:{
         type:String,
         required:true,
         unique: true,
+        lowercase: true,
     },
     password:{
         type:Buffer,
         required:true,
-    },
-    salt:{
-        type:String,
-        require:true,
     },
     createdAt:{
         type:Date,
@@ -32,6 +29,8 @@ const UserSchema = new mongoose.Schema({
     email:{
         unique:true,
         type:String,
+        default:'no_email',
+        lowercase:true,
     }
     
 },
