@@ -87,13 +87,18 @@ module.exports.updatePart = async (req,res)=>{
                 
                 console.log(`found part is `,foundPart)
 
-                // const result = await Parts.updateOne(
-                //     {
-                //         _id:foundPart._id
-                //     }
-                //     )
-            
-                //  console.log(result)
+                const result = await Parts.updateOne(
+                    {
+                        _id:foundPart._id
+                    },
+                    {
+                        $set : req.body
+
+                        
+                    }
+                    )
+            // ! set the update or maybe use the save by updating individual properties?
+                 console.log(result)
                 res.redirect('/')
                 
             } 

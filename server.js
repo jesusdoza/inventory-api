@@ -46,7 +46,7 @@ app.use(session({
         mongoUrl: process.env.connectStr,
     }),
     cookie:{
-        maxAge:60000,
+        maxAge:15*60*1000,
     }
 }))
 
@@ -179,7 +179,6 @@ app.listen(process.env.PORT || PORT, ()=>{
 //     }
 // })// end of put /inventory
    
-
 
 
 
