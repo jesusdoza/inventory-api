@@ -3,8 +3,9 @@ const User = require('../models/User')
 const validator = require('validator')
 
 module.exports.getLogin = (req,res)=>{
-        if (req.user) {
-            return res.redirect('/')
+  console.log(req.user)
+        if (req.user) { //if user is already authenticated
+            return res.redirect('/inventory')
           }
 
         res.render('login.ejs')

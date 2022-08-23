@@ -63,7 +63,7 @@ app.use(session({
 ////ROUTES FILES
 const inventoryRoute = require('./routes/inventory')
 const mainRoutes = require('./routes/main');
-const httpsRedirect = require('./middleware/httpsRedirect');
+// const httpsRedirect = require('./middleware/httpsRedirect');
 
 //// ROUTES
 app.use('/inventory',ensureAuth,inventoryRoute)
