@@ -38,6 +38,9 @@ h1{
     text-align: center;
     font-size: 1.5rem;
 }
+h2{
+    color:black;
+}
 input{
     font-size: 3rem;
 }
