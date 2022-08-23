@@ -5,14 +5,14 @@ module.exports= {
             return next();
         }else{//else send to login at root
             console.log(`authenticated?`,req.isAuthenticated())
-            res.redirect('/');
+            res.redirect('/login');
         }
 
     },
     ensureGuest: function(req,res,next){
         if(req.isAuthenticated()){ // already authenticated send to dashboard
             console.log(`authenticated?`,req.isAuthenticated())
-            res.redirect('/dashboard');
+            res.redirect('/inventory');
         }else{//else go to next
             console.log(`authenticated?`,req.isAuthenticated())
             return next();

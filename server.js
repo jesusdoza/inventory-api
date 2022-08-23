@@ -8,6 +8,7 @@ const session = require('express-session');
 const logger = require('morgan');
 const cors = require('cors');
 
+// const { ensureAuth, ensureGuest } = require('./middleware/auth')
 
 //enviroment vars
 require('dotenv').config({path:'./config/.env'});
@@ -62,7 +63,7 @@ const inventoryRoute = require('./routes/inventory')
 const mainRoutes = require('./routes/main')
 
 //// ROUTES
-app.use('/inventory',inventoryRoute)
+app.use('/inventory',ensureAuth,inventoryRoute)
 app.use ('/', mainRoutes)
 
 
