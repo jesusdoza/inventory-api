@@ -71,22 +71,23 @@ module.exports.postSignup = (req,res)=>{
         email: req.body.email,
         password: req.body.password
       })
-      console.log(user)
+      console.log(`new user is: `,user)
 
       ///query database
       User.findOne({//!match either email or username
      
-        userName: req.body.username
+        username: req.body.username
       }, (err, existingUser) => { //! callback after findOne query (err, VAR_NAME)
         if (err) { throw new Error(`user look up error`) } //! error is truthy
         if (existingUser) { //! user already added so pick another
+          console.log('user already exists: ',existingUser)///here problem registering
           throw new Error(`username in use`)
         }
 
 
         user.save((err) => { //! user passed up to this point and is valid to save to database
 
-          if (err) {  throw new Error(`user saving error`) }
+          if (err) { console.log(err); throw new Error(`user saving error`,err) }
 
           req.logIn(user, (err) => { //! log user in 
             if (err) {

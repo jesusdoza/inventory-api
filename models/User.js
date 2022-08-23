@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
         default:1
     },
     email:{
-        unique:true,
+        // unique:true,
         type:String,
         default:'no_email',
         lowercase:true,
@@ -41,6 +41,7 @@ const UserSchema = new mongoose.Schema({
 
 // Password hash middleware.
 UserSchema.pre('save', function save(next) {
+  console.log(`pre save`, this)
     const user = this
     if (!user.isModified('password')) { return next() }
     bcrypt.genSalt(10, (err, salt) => {
@@ -48,6 +49,7 @@ UserSchema.pre('save', function save(next) {
       bcrypt.hash(user.password, salt, (err, hash) => {
         if (err) { return next(err) }
         user.password = hash
+        console.log(user)
         next()
       })
     })
