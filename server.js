@@ -44,6 +44,9 @@ app.use(session({
     store:MongoStore.create({
         mongoUrl: process.env.connectStr,
     }),
+    cookie:{
+        maxAge:60000,
+    }
 }))
 
 
@@ -56,11 +59,11 @@ app.use(session({
 
 ////ROUTES FILES
 const inventoryRoute = require('./routes/inventory')
-const loginRoutes = require('./routes/login')
+const mainRoutes = require('./routes/main')
 
 //// ROUTES
 app.use('/inventory',inventoryRoute)
-app.use ('/login', loginRoutes)
+app.use ('/', mainRoutes)
 
 
 
@@ -70,22 +73,6 @@ app.listen(process.env.PORT || PORT, ()=>{
     console.log(`server on ${PORT}`)
 })
 
-
-//     //get inventory numbers
-// app.get('/', async (request, response)=>{
-//     try{  
-//         //get all inventory from database
-//         const allInventory = await collection.find().toArray()
-        
-//         // render index.ejs template passing in variable inventory holding allInventory
-//         response.render('index.ejs',{inventory:allInventory})
-        
-//         response.end()
-//     }
-//     catch(err){
-//         throw new Error(`error at root inventory load ${err}`)
-//     }
-// })//end of get /
 
 
 
@@ -135,100 +122,6 @@ app.listen(process.env.PORT || PORT, ()=>{
 
 
 
-
-// //delete one item
-// app.delete('/inventory', async (request, response)=>{
-//     console.log('delete recieved')
-
-//     let part='delete part placeholder'
-
-//     part=request.body.partnumber
-    
-    
-//     console.log(request.body)
-
-//     //search collection for part
-//     const cursor = await collection.find({ 
-//         'partnumber' : part         
-//     }).toArray()
-    
-//     console.log(cursor)
-
-
-//     if(cursor.length){
-//     //if part exists delete it
-//         const result = await collection.deleteOne({
-//             'partnumber':part
-//         })
-
-//         console.log(result)
-//         response.status(200).send({deleted:{ cursor}})
-//         // response.redirect('/')
-        
-//     }
-
-//     else{
-//     //else item not in the database so do nothing
-
-//         console.log(`not in database`)
-//         response.send({no_such_item:part})
-//         response.end()
-//     }
-// })//end of delete
-    
-
-
-
-//     //add new partnumber to inventory
-// app.post('/inventory', async (request, response)=>{
-//     console.log(`post recieved`)
-//     let part='new part placeholder',
-//     newModel= 'new model placeholder',
-//     newQuantity = 0,
-//     engineMan = 'manufacturer'
-
-//                                                 console.log(`body at /inventory POST`)
-//                                                 console.log(request.body)
-
-//     part=request.body.part.trim()
-//     newModel= request.body.model.trim()
-//     newQuantity = request.body.quantity
-//     engineMan = request.body.engine_man.trim()
-
-    
-//     //build object from form values
-//     const newItem ={
-//         partnumber:part,
-//         model:newModel,
-//         manufacturer:engineMan,
-//         instock:newQuantity,
-//     }
-
-//                                                 console.log(`new item at /inventory POST`)
-//                                                 console.log(newItem)
-
-    
-//     //search collection for part
-//     const cursor = await collection.find({ 
-//         'partnumber' : part         
-//     }).toArray()
-    
-//                                                     console.log(cursor.length)
-
-//     //of cursor is not [] empty then database already has item
-//     if(cursor.length){
-//     //if part exists do not insert into database
-//         response.status(409).send({error:{ newPart :part , problem:'already exists'}})
-//     }
-
-//     else{
-//     //else newItem not in the database so insert it
-
-//         await collection.insertOne(newItem)
-//         // response.send({inserted:newItem})
-//         response.redirect('/')
-//     }
-// })//end post /inventory
 
 
 

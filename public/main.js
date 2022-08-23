@@ -41,9 +41,10 @@ list.addEventListener('click', (event)=>{
 
 // update all items
 // =================================
-async function updateAllItems(list_){
+// todo will have different html element structure 
+async function updateAllItems(elementList_){
     
-   const updatePromises =  list_.map(async (element) => {
+   const updatePromises =  elementList_.map(async (element) => {
         // let responseArr=[]
         const part = `${element.querySelector('.part_id').innerText}`
         const model = element.querySelector('.model_id').innerText
@@ -72,11 +73,9 @@ async function updateAllItems(list_){
 // ======================================================
 async function updateSingle(obj_){
   
-    console.log(`updating single`)
-    console.log(obj_)
 
     try{
-        let response = await fetch('/inventory',{
+        let response = await fetch('/inventory/update',{
             method: 'put',
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify(obj_)
@@ -116,21 +115,24 @@ function makeEntryObj(htmlElement_){
 
 
 // what items had there quantities changed?
-// =========================================================
+// todo change how items are checked for change add dataset to input containing original number
+// todo ~ and check against it instead
+
+//! original
 function itemsChanged(htmlNodeList_){
     let newList=[];
     let checklist= htmlNodeList_
 
 
     //filter html nodes list that have not been changed
-    checklist.forEach((e)=>{
-        let instock = Number(e.querySelector('.instock span').innerText) ? Number(e.querySelector('.instock span').innerText) : 0 ;
-        let updateInstock =  Number(e.querySelector('.quantity input').value) ? Number(e.querySelector('.quantity input').value) : 0 ;
+    checklist.forEach((element)=>{
+        let instock = Number(element.querySelector('.instock span').innerText) ? Number(element.querySelector('.instock span').innerText) : 0 ;
+        let updateInstock =  Number(element.querySelector('.quantity input').value) ? Number(element.querySelector('.quantity input').value) : 0 ;
 
         console.log(` ${updateInstock} ::: ${instock}  `)
 
         if( instock != updateInstock ){
-            newList.push(e)
+            newList.push(element)
             // console.log(`${e.querySelector('.quantity').value} ::: ${e.querySelector('.instock').innerText}  `)
         }
     })
@@ -207,6 +209,7 @@ function changeInventory(event_){
 
 
             //what items where changed and need update
+          
             const itemsNeedUpdate = itemsChanged(inventory);
             updateAllItems(itemsNeedUpdate)
            //was item changed 
