@@ -35,19 +35,29 @@ module.exports.postLogin = (req,res,next)=>{
         res.redirect(req.session.returnTo || '/inventory')
     })
     })(req, res, next)
-            
+          
             
 }
 
 
 module.exports.logout = (req,res)=>{
-    req.logout()
-    res.session.destroy((err)=>{
-        if (err) console.log(`error: failed to destroy session during logout.`, err)
-        
-        req.user=null
-        res.redirect('/');
-    })
+  console.log(`logout**************************************`)
+
+  try {
+      req.logout(()=>{
+        req.session.destroy((err)=>{
+          if (err) console.log(`error: failed to destroy session during logout.`, err)
+          
+          req.user=null
+          res.redirect('/login');
+      })
+      })
+    
+  } catch (error) {
+    console.log(error)
+    res.redirect('/login')
+  }
+    
 }
 
 module.exports.getSignup = (req,res)=>{

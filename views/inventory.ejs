@@ -8,12 +8,33 @@
 
 		<title>Inventory</title>
 
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+   		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		<link rel="stylesheet" href="normalize.css">
 		<link rel="stylesheet" href="style.css"> 
-
 	</head>
 	<body>
-		<h1>Inventory in Stock</h1>
+		
+<nav class="grey darken-3">
+    <div class="class nav-wrapper container">
+        <a href="#" class="brand-logo center">Inventory</a>
+        <a href="#" data-target='mobile-demo' class="sidenav-trigger show-on-large">
+            <i class="fas  fa-bars"></i>
+        </a>
+		<a href="#" data-target='mobile-demo' class=" float-right sidenav-trigger show-on-large">
+            <i class="fas fa-bars"></i>
+        </a>
+		
+        <ul class="sidenav" id="mobile-demo">
+            <li class="sidenav-li"><a href="/inventory">Inventory</a></li>
+			<li class="sidenav-li"><a href="/login">Login</a></li>
+            <li class="sidenav-li"><a href="/logout">Logout</a></li>
+
+
+        </ul>
+    </div>
+</nav>
 
 		<!-- add new part to inventory form -->
 
@@ -73,7 +94,7 @@
 
 
 		<section>
-			<h3>Inventory:</h3>
+			<h1>Inventory:</h1>
 			<!-- <button id="update-all" class="update_inventory">Update All Inventory</button> -->
 		</section>
 		
@@ -83,9 +104,13 @@
 				<!-- get specific properties interested in -->
 				<%let {instock:instock,partnumber:partnumber,model:model,...leftover} = inventory[i] %>
 
+				<li class=" blue lighten-4 card waves-effect waves-block waves-light">
+				
 
+				</li>
 				<!-- partnumber entry into DOM -->
 				<li class="partnumber" >
+
 					<section class="part-info" >
 
 						<!-- new section for leftover keys -->
@@ -190,5 +215,10 @@
 		
 
 		<script  src="main.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script>
+		
+			M.Sidenav.init(document.querySelector('.sidenav'))
+		</script>
 	</body>
 </html>
