@@ -1,7 +1,22 @@
 {
     "folders": [
         {
+            "path": "../TEST"
+        },
+        {
+            "path": "../repair-reports"
+        },
+        {
+            "path": "../algorithms"
+        },
+        {
             "path": "."
         }
-    ]
+    ],
+    "settings": {
+        "workbench.preferredHighContrastColorTheme": "Default Dark+",
+        "workbench.preferredHighContrastLightColorTheme": "Default Dark+",
+        "workbench.preferredLightColorTheme": "Default Dark+",
+        "liveServer.settings.multiRootWorkspaceName": "repair-reports"
+    }
 }
