@@ -1,6 +1,40 @@
 // const { response } = require("express");
 const Parts = require("../models/Part");
+const path = require('path');
 
+module.exports.getInventoryreact = async (req,res)=>{
+
+    try {
+        // const allInventory = await Parts.find();
+
+      
+        res.sendFile(path.resolve(__dirname,'../views/inventory-react.html'));
+       
+
+    } catch (error) {
+        console.log(`error getting inventory`,error)
+        res.status(500).json({"message":"error getting inventory"})
+    }
+    
+}
+
+module.exports.getInventoryApi = async (req,res)=>{
+
+    try {
+        console.log(res.body)
+        const allInventory = await Parts.find();
+
+
+        // res.render('inventory.ejs',{inventory:allInventory})
+        res.json( allInventory);
+       
+
+    } catch (error) {
+        console.log(`error getting inventory`,error)
+        res.status(500).json({"message":"error getting inventory"})
+    }
+    
+}
 
 module.exports.getInventory = async (req,res)=>{
 
@@ -8,6 +42,8 @@ module.exports.getInventory = async (req,res)=>{
         const allInventory = await Parts.find();
 
         res.render('inventory.ejs',{inventory:allInventory})
+        // res.sendFile(path.resolve(__dirname,'../views/inventory-react.html'));
+       
 
     } catch (error) {
         console.log(`error getting inventory`,error)

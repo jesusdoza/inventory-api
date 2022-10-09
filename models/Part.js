@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const PartSchema = new mongoose.Schema({
+    company:{
+        type:String,
+        require:true,
+        default:'no company'
+    },
     partnumber:{
         type:String,
         require:true,
