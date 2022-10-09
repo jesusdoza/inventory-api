@@ -15,6 +15,7 @@ module.exports.getLogin = (req,res)=>{
 module.exports.postLogin = (req,res,next)=>{
 
   console.log(`POST LOGIN*********************************************`)
+  console.log(req.body)
    
   if(!req.body.password){
     console.log(`no password`)
