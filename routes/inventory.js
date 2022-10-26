@@ -6,7 +6,7 @@ const  {ensureAuth,ensureGuest } = require('../middleware/auth')
 
 /// @route /inventory/????
 Router.get('/',inventoryController.getInventory)
-Router.post('/', inventoryController.addPart)
+Router.post('/', inventoryController.addItem)
 Router.delete('/', inventoryController.removePart)
 Router.put('/update',inventoryController.updatePart)
 

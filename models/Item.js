@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const PartSchema = new mongoose.Schema({
+const ItemSchema = new mongoose.Schema({
     partnumber:{
         type:String,
         require:true,
@@ -30,8 +30,8 @@ const PartSchema = new mongoose.Schema({
         type:Number,
         default:0,
     },
-    group:{
-        type:String,
+    groups:{
+        type:[String],
         require:true,
     },
     createdBy:{
@@ -43,4 +43,4 @@ const PartSchema = new mongoose.Schema({
     collection:"inventory"
 })
 
-module.exports = mongoose.model('Part', PartSchema)
+module.exports = mongoose.model('Item', ItemSchema)

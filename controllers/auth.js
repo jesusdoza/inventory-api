@@ -1,118 +1,113 @@
 const passport = require('passport')
-const User = require('../models/User')
-const validator = require('validator')
 
-module.exports.getLogin = (req,res)=>{
-  console.log(req.user)
-        if (req.user) { //if user is already authenticated
-            return res.redirect('/inventory')
-          }
+const validator = require('validator') 
+const User = require('../models/User') //new user gets put in user collection
 
-        res.render('login.ejs')
-}
-
-
-module.exports.postLogin = (req,res,next)=>{
-
-  console.log(`POST LOGIN*********************************************`)
-  console.log(req.body)
-   
-  if(!req.body.password){
-    console.log(`no password`)
-    return res.redirect('/login')
-  }
-
-    passport.authenticate('local', (err, user, info) => {
-      console.log(`post login user :`,user)
-      console.log(`post login info :`, info)
-    if (err) { return next(err) }
-    if (!user) {
-        console.log(`user not found`)
-        return res.redirect('/login')
+/// get login
+ exports.getLogin = (req, res) => { // todo
+    if (req.user) {
+      return res.redirect('/inventory')// already authenticated send user to 
     }
-    req.logIn(user, (err) => {
+    res.render('login', {
+      title: 'Login'
+    })
+  }
+  
+  ///login post
+  exports.postLogin = (req, res, next) => {
+    const validationErrors = []
+    console.log(req.body)
+    if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
+    if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: 'Password cannot be blank.' })
+  
+    if (validationErrors.length) {
+      // req.flash('errors', validationErrors)
+      return res.redirect('/login')
+    }
+    req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
+  
+    passport.authenticate('local', (err, user, info) => {
+      if (err) { return next(err) }
+      if (!user) {
+        console.log('no user exists')
+        // req.flash('errors', info)
+        return res.redirect('/login')
+      }
+      req.logIn(user, (err) => {
         if (err) { return next(err) }
         // req.flash('success', { msg: 'Success! You are logged in.' })
+        console.log('success login')
         res.redirect(req.session.returnTo || '/inventory')
-    })
+      })
     })(req, res, next)
-          
-            
-}
-
-
-module.exports.logout = (req,res)=>{
-  console.log(`logout**************************************`)
-
-  try {
-      req.logout(()=>{
-        req.session.destroy((err)=>{
-          if (err) console.log(`error: failed to destroy session during logout.`, err)
-          
-          req.user=null
-          res.redirect('/login');
-      })
-      })
-    
-  } catch (error) {
-    console.log(error)
-    res.redirect('/login')
   }
+  
+  /// logout
+  exports.logout = (req, res) => {
+    console.log(`logout route`)
     
-}
+    req.logout((err) => {
 
-module.exports.getSignup = (req,res)=>{
-    if(req.user){
-        return res.redirect('/inventory')
-    }
+      if(err)return next (err);
 
-    res.render('signup.ejs',{
-        title: 'Create Account'
+      console.log('User has logged out.')
+      req.session.destroy((err) => {
+        if (err) console.log('Error : Failed to destroy the session during logout.', err)
+        req.user = null
+        res.redirect('/')
+      })
     })
-}
-
-
-module.exports.postSignup = (req,res)=>{
-
-  try {
-    console.log(req.body)
-    ///adding user to database
-    const user = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password
-      })
-      console.log(`new user is: `,user)
-
-      ///query database
-      User.findOne({//!match either email or username
-     
-        username: req.body.username
-      }, (err, existingUser) => { //! callback after findOne query (err, VAR_NAME)
-        if (err) { throw new Error(`user look up error`) } //! error is truthy
-        if (existingUser) { //! user already added so pick another
-          console.log('user already exists: ',existingUser)///here problem registering
-          throw new Error(`username in use`)
-        }
-
-
-        user.save((err) => { //! user passed up to this point and is valid to save to database
-
-          if (err) { console.log(err); throw new Error(`user saving error`,err) }
-
-          req.logIn(user, (err) => { //! log user in 
-            if (err) {
-               throw new Error(`login error`)
-            }
-            res.redirect('/inventory')
-          })
-        })
-
-      })///end of findOne
-  } catch (error) {
-
-    console.log(error)
-    res.status(500).json({message:error.message})
   }
-   
-}
+  
+  exports.getSignup = (req, res) => {
+    if (req.user) {
+      return res.redirect('/')
+    }
+    res.render('signup', {
+      title: 'Create Account'
+    })
+  }
+  
+/// signup
+  exports.postSignup = (req, res, next) => { //checking to see if password ect match
+
+    console.log(`signup body`,req.body)
+    const validationErrors = []
+    if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: 'Please enter a valid email address.' })
+    if (!validator.isLength(req.body.password, { min: 8 })) validationErrors.push({ msg: 'Password must be at least 8 characters long' })
+    if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: 'Passwords do not match' })
+  
+    if (validationErrors.length) {
+      // req.flash('errors', validationErrors)
+      return res.redirect('../signup')
+    }
+    req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false })
+  
+
+    const user = new User({  //new User is our user model, we grab username,email, password from request body of the form to create a new user
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    })
+  
+    User.findOne({$or: [
+      {email: req.body.email},
+      {username: req.body.username}
+    ]}, (err, existingUser) => {
+      if (err) { return next(err) }
+      if (existingUser) {
+        // req.flash('errors', { msg: 'Account with that email address or username already exists.' })
+        return res.redirect('../signup')
+      }
+
+      user.save((err) => {//save the new user model to create a new user in our users collection
+        if (err) { return next(err) }
+        req.logIn(user, (err) => {
+          if (err) {
+            return next(err)
+          }
+          res.redirect('/inventory') //last thing it does is redirect us to the dashboard
+        })
+      })
+    })
+  }

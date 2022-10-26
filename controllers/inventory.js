@@ -1,12 +1,15 @@
 // const { response } = require("express");
 const Parts = require("../models/Part");
-
+const Items = require("../models/Item");
 
 module.exports.getInventory = async (req,res)=>{
 
     try {
-        const allInventory = await Parts.find();
+        const allInventory = await Items.find({ $or: [ {createdBy:req.user.username} ] } )
+        // const allInventory = await Items.find()
 
+    
+        console.log(allInventory)
         res.render('inventory.ejs',{inventory:allInventory})
 
     } catch (error) {
@@ -17,14 +20,17 @@ module.exports.getInventory = async (req,res)=>{
 }
 
 
-module.exports.addPart = async (req,res)=>{
-    console.log(req.body)
+
+module.exports.addItem = async (req,res)=>{
+    console.log(req.user)
     try {
-        const newPart  = await Parts.create({
+        const newItem  = await Items.create({
             partnumber:req.body.part,
             model:req.body.model,
             enginemake:req.body.engine_make,
             instock:req.body.quantity,
+            groups:[req.user.username],
+            createdBy:req.user.username,
             // cores:,
             // warranty:,
             // problem:,
