@@ -5,11 +5,11 @@ const Items = require("../models/Item");
 module.exports.getInventory = async (req,res)=>{
 
     try {
-        const allInventory = await Items.find({ $or: [ {createdBy:req.user.username} ] } )
-        // const allInventory = await Items.find()
-
-    
-        console.log(allInventory)
+        
+        //get all inventory that matches the groups user is a part of
+        const allInventory = await Items.find({groups:{$in:req.user.groups}} )
+        // console.log(allInventory)
+        // console.log(req.user)
         res.render('inventory.ejs',{inventory:allInventory})
 
     } catch (error) {
