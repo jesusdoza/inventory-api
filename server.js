@@ -29,13 +29,13 @@ if(process.env.ENVIROMENT !== 'dev'){
     // app.use(HttpsRedirect)
 }
 
+app.use(MethodOverride('_method'))
 app.use(cors());
 app.set('view engine', 'ejs'); // for template
 app.use(express.static('public')); //use templates from folder
 app.use(express.urlencoded({extended:true})); //get body data
 app.use(express.json());
 app.use(logger('dev'));
-app.use(MethodOverride('_method'))
 
 
 //Sessions
