@@ -7,6 +7,7 @@ const flash = require('express-flash');
 const session = require('express-session');
 const logger = require('morgan');
 const cors = require('cors');
+const MethodOverride = require('method-override')
 // const HttpsRedirect = require('./middleware/httpsRedirect')//!not used yet
 
 //enviroment vars
@@ -34,6 +35,7 @@ app.use(express.static('public')); //use templates from folder
 app.use(express.urlencoded({extended:true})); //get body data
 app.use(express.json());
 app.use(logger('dev'));
+app.use(MethodOverride('_method'))
 
 
 //Sessions
@@ -63,11 +65,15 @@ app.use(session({
 ////ROUTES FILES
 const inventoryRoute = require('./routes/inventory')
 const mainRoutes = require('./routes/main');
+const apiRoutes = require('./routes/api.js');
 // const httpsRedirect = require('./middleware/httpsRedirect');
+const reactRoutes = require('./routes/react.js');
 
 //// ROUTES
-app.use('/inventory',ensureAuth,inventoryRoute)
+app.use('/api',apiRoutes)
+app.use('/inventory',inventoryRoute)
 app.use ('/', mainRoutes)
+app.use ('/react', reactRoutes)
 
 
 app.listen(process.env.PORT || PORT, ()=>{
