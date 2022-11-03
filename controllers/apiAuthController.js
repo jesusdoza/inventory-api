@@ -10,7 +10,7 @@ module.exports.postLogin=(req,res,next)=>{
      
     if(!req.body.password){
       console.log(`no password`)
-      return res.json({"login":"fail","message":"1"})
+      return res.status(400).json({"login":"fail","message":"1"})
     }
   
       passport.authenticate('local', (err, user, info) => {
@@ -42,13 +42,13 @@ module.exports.logout = (req,res)=>{
           if (err) console.log(`error: failed to destroy session during logout.`, err)
           
           req.user=null
-          return res.json({"login":"failed"})
+          return res.json({"logout":"success"})
       })
       })
     
   } catch (error) {
     console.log(error)
-    return res.json({"logout":"success"})
+    return res.json({"logout":"failed"})
   }
     
 }
