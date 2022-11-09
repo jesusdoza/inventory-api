@@ -7,7 +7,7 @@ const Items = require("../models/Item");
 module.exports.getInventory = async (req,res)=>{
     try {
         //get all inventory that matches the groups user is a part of
-        const allInventory = await Items.find({})
+        const allInventory = await Items.find({groups:{$in:req.user.groups}})
         console.log(req.body)
         // console.log(req.user)
         res.json({"inventory":allInventory})
