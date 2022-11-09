@@ -30,7 +30,12 @@ if(process.env.ENVIROMENT !== 'dev'){
 }
 
 app.use(MethodOverride('_method'))
-app.use(cors());
+app.use(cors(
+    {
+        origin:"http://localhost:3000",// domain request comming from or set true if all ok
+        credentials:true, // credentials will be sent
+    }
+));
 app.set('view engine', 'ejs'); // for template
 app.use(express.static('public')); //use templates from folder
 app.use(express.urlencoded({extended:true})); //get body data

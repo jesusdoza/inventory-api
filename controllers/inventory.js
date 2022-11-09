@@ -8,9 +8,10 @@ module.exports.getInventory = async (req,res)=>{
         
         //get all inventory that matches the groups user is a part of
         const allInventory = await Items.find({groups:{$in:req.user.groups}} )
+        // const allInventory = await Items.find()
         // console.log(allInventory)
         // console.log(req.user)
-        res.render('inventory.ejs',{inventory:allInventory})
+        res.render('inventory.ejs',{inventory:allInventory,user:req.user.username})
 
     } catch (error) {
         console.log(`error getting inventory`,error)
@@ -50,7 +51,7 @@ module.exports.removePart = async (req,res)=>{
     console.log(`remove part`)
     try {
                 //find specific entry
-                const foundPart = await Parts.findOne(
+                const foundPart = await Items.findOne(
                     //query
                     {      
                         partnumber : req.body.partnumber
@@ -62,7 +63,7 @@ module.exports.removePart = async (req,res)=>{
                 
                 console.log(`found part is `,foundPart)
 
-                const result = await Parts.deleteOne({_id:foundPart._id})
+                const result = await Items.deleteOne({_id:foundPart._id})
             
                  console.log(result)
                 res.redirect('/')
@@ -81,7 +82,7 @@ module.exports.updatePart = async (req,res)=>{
     console.log(req.body)
     try {
                 //find specific entry
-                const foundPart = await Parts.findOne(
+                const foundPart = await Items.findOne(
                     //query
                     {      
                         partnumber : req.body.partnumber
@@ -93,7 +94,7 @@ module.exports.updatePart = async (req,res)=>{
                 
                 console.log(`found part is `,foundPart)
 
-                const result = await Parts.updateOne(
+                const result = await Items.updateOne(
                     {
                         _id:foundPart._id
                     },
