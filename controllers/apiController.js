@@ -80,6 +80,12 @@ module.exports.removePart = async (req,res)=>{
 //todo
 module.exports.updatePart = async (req,res)=>{
     console.log(req.body)
+    const updateFeilds={
+        instock: req.body.instock,
+        cores:  req.body.cores,
+        warranty: req.body.warranty,
+        problem:  req.body.problem,
+    }
     try {
                 //find specific entry
                 const foundPart = await Parts.findOne(
@@ -99,7 +105,7 @@ module.exports.updatePart = async (req,res)=>{
                         _id:foundPart._id
                     },
                     {
-                        $set : req.body
+                        $set : updateFeilds
 
                         
                     }
@@ -112,7 +118,7 @@ module.exports.updatePart = async (req,res)=>{
             catch (error) {
                 console.log('error at update',error)
                 
-                res.status(505).json({message:"error deleting"});
+                res.status(505).json({message:"error updating"});
               
             }
     
