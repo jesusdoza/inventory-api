@@ -24,18 +24,32 @@ connectDB();
 
 //authentication middleware
 const {ensureAuth,ensureGuest} = require('./middleware/auth');
+const {apiEnsureAuth} = require('./middleware/apiAuth');
+
+
 
 if(process.env.ENVIROMENT !== 'dev'){
     // app.use(HttpsRedirect)
 }
 
+// app.use(cors());///original 
+
+/// for react need to set origin allowed
+app.use(cors(
+    {
+        origin:"http://localhost:3000",
+        credentials:true,
+    }
+));
 app.use(MethodOverride('_method'))
+
 app.use(cors(
     {
         origin:"http://localhost:3000",// domain request comming from or set true if all ok
         credentials:true, // credentials will be sent
     }
 ));
+
 app.set('view engine', 'ejs'); // for template
 app.use(express.static('public')); //use templates from folder
 app.use(express.urlencoded({extended:true})); //get body data
@@ -60,9 +74,9 @@ app.use(session({
 }))
 
 
-    //passport middleware
-    app.use(passport.initialize())
-    app.use(passport.session())
+//passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 
@@ -75,8 +89,8 @@ const apiRoutes = require('./routes/api.js');
 const reactRoutes = require('./routes/react.js');
 
 //// ROUTES
-app.use('/api',apiRoutes)
-app.use('/inventory',inventoryRoute)
+app.use('/api',apiEnsureAuth,apiRoutes)
+app.use('/inventory',ensureAuth,inventoryRoute)
 app.use ('/', mainRoutes)
 app.use ('/react', reactRoutes)
 

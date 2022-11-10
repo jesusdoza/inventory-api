@@ -2,25 +2,12 @@
 const Parts = require("../models/Part");
 const Items = require("../models/Item");
 
-module.exports.postLogin = async (req,res)=>{
-    try {
-        //get all inventory that matches the groups user is a part of
-        console.log(req.body)
-        // console.log(req.user)
-        res.json({"login":"success"})
-
-    } catch (error) {
-        console.log(`error getting inventory`,error)
-        res.status(500).json({"message":"error getting inventory"})
-    }
-    
-}
 
 
 module.exports.getInventory = async (req,res)=>{
     try {
         //get all inventory that matches the groups user is a part of
-        const allInventory = await Items.find({groups:{$in:req.body.username}})
+        const allInventory = await Items.find({groups:{$in:req.user.groups}})
         console.log(req.body)
         // console.log(req.user)
         res.json({"inventory":allInventory})

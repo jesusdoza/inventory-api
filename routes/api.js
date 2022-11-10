@@ -14,6 +14,7 @@ Router.delete('/', apiController.removePart)
 Router.put('/update',apiController.updatePart)
 
 Router.post('/login', apiAuthController.postLogin)
+Router.get('/logout', apiAuthController.logout)
 
 
 module.exports = Router
