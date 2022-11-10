@@ -32,6 +32,7 @@
             <li class="sidenav-li"><a href="/logout">Logout</a></li>
 
         </ul>
+		<span><%= user %> </span>
     </div>
 </nav>
 
@@ -102,10 +103,9 @@
 			<% for(let i =0; i<inventory.length; i++) {%>
 				<!-- get specific properties interested in -->
 				<%let {instock:instock,partnumber:partnumber,model:model,...leftover} = inventory[i] %>
-
+				
 				<!-- partnumber entry into DOM -->
 				<li class="partnumber" >
-
 					<section class="part-info" >
 
 						<!-- new section for leftover keys -->
