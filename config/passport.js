@@ -16,7 +16,9 @@ module.exports =  function (passport) {
       user.comparePassword(password, (err, isMatch) => {
         if (err) { return done(err) }
         if (isMatch) {
-          return done(null, user)
+
+          // console.log(`DONE user `,user)
+          return done(null, user)//! original trying to specify what is serialized
         }
         return done(null, false, { msg: 'Invalid email or password.' })
       })
@@ -25,10 +27,20 @@ module.exports =  function (passport) {
   
 
   passport.serializeUser((user, done) => {
+    console.log(`serialize user`, user.id)
+
     done(null, user.id)
   })
 
   passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => done(err, user))
+    User.findById(id, (err, user) => done(err, user))//!original
+    ///new
+    //  User.findById(id, (err, user) => done(err, {
+    //   username:user.username,
+    //   role:user.role,
+    //   groups:user.groups
+    //  }))
+     ///new
+
   })
 }
