@@ -5,7 +5,7 @@ const validator = require('validator')
 
 module.exports.postLogin=(req,res,next)=>{
 
-    console.log(`POST LOGIN*********************************************`)
+    console.log(`API POST LOGIN*********************************************`)
     console.log(req.body)
      
     if(!req.body.password){

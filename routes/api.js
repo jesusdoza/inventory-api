@@ -8,10 +8,10 @@ const apiAuthController = require('../controllers/apiAuthController')
 
 
 /// @route /api/*
-Router.get('/',apiController.getInventory)
-Router.post('/', apiController.addItem)
-Router.delete('/', apiController.removePart)
-Router.put('/update',apiController.updatePart)
+Router.get('/',ensureAuth,apiController.getInventory)
+Router.post('/',ensureAuth, apiController.addItem)
+Router.delete('/',ensureAuth, apiController.removePart)
+Router.put('/update',ensureAuth,apiController.updatePart)
 
 Router.post('/login', apiAuthController.postLogin)
 Router.get('/logout', apiAuthController.logout)

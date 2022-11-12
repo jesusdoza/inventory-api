@@ -89,7 +89,7 @@ const apiRoutes = require('./routes/api.js');
 const reactRoutes = require('./routes/react.js');
 
 //// ROUTES
-app.use('/api',apiEnsureAuth,apiRoutes)
+app.use('/api',apiRoutes)
 app.use('/inventory',ensureAuth,inventoryRoute)
 app.use ('/', mainRoutes)
 app.use ('/react', reactRoutes)
