@@ -2,10 +2,10 @@ module.exports= {
     apiEnsureAuth:function(req,res,next){
         console.log('api auth check', req.isAuthenticated)
         if(req.isAuthenticated()){//if authenticated is truthy next()
-            console.log(`authenticated?`,req.isAuthenticated())
+            // console.log(`authenticated?`,req.isAuthenticated())
             return next();
         }else{//else send to login at root
-            console.log(`authenticated?`,req.isAuthenticated())
+            // console.log(`authenticated?`,req.isAuthenticated())
             res.status(500).json({"message":"login failed"});
         }
 

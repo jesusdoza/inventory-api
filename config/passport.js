@@ -34,13 +34,6 @@ module.exports =  function (passport) {
 
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => done(err, user))//!original
-    ///new
-    //  User.findById(id, (err, user) => done(err, {
-    //   username:user.username,
-    //   role:user.role,
-    //   groups:user.groups
-    //  }))
-     ///new
 
   })
 }
