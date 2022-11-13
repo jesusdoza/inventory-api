@@ -1,4 +1,5 @@
 name: Build and Test
+
 on:
   push:
     branches: [main]
@@ -17,8 +18,11 @@ jobs:
       with:
         node-version: '16'
     - name: Install Dependencies
-      run: npm install -g jest
-      run: npm test
+      run: |
+        npm install
+        npm install jest
+        npm test
+        
   
     - name: Run Tests
       run: |
