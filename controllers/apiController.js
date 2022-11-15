@@ -10,7 +10,10 @@ module.exports.getInventory = async (req,res)=>{
         const allInventory = await Items.find({groups:{$in:req.user.groups}})
         console.log(req.body)
         // console.log(req.user)
-        res.json({"inventory":allInventory})
+        res.json(
+            {
+                "inventory":allInventory
+            })
 
     } catch (error) {
         console.log(`error getting inventory`,error)
