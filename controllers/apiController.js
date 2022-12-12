@@ -41,7 +41,7 @@ module.exports.addItem = async (req, res) => {
   }
 };
 
-//todo
+//todo REMOVE
 module.exports.removePart = async (req, res) => {
   console.log(`remove part`);
   try {
@@ -70,15 +70,10 @@ module.exports.removePart = async (req, res) => {
   }
 };
 
-//todo
+//todo UPDATE
 module.exports.updatePart = async (req, res) => {
   console.log(req.body);
-  const updateFeilds = {
-    instock: req.body.instock,
-    cores: req.body.cores,
-    warranty: req.body.warranty,
-    problem: req.body.problem,
-  };
+  const updateFeilds = { ...req.body.updateFeilds };
   try {
     //find specific entry
     const foundPart = await Parts.findOne(
@@ -94,17 +89,12 @@ module.exports.updatePart = async (req, res) => {
 
     console.log(`found part is `, foundPart);
 
-    const result = await Parts.updateOne(
-      {
-        _id: foundPart._id,
-      },
-      {
-        $set: updateFeilds,
-      }
-    );
+    for (field in updateFeilds) {
+      foundPart[field] = updateFeilds[field];
+    }
+    await foundPart.save();
     // ! set the update or maybe use the save by updating individual properties?
-    console.log(result);
-    res.redirect("/");
+    console.log(`updated found part :`, foundPart);
   } catch (error) {
     console.log("error at update", error);
 
