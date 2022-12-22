@@ -92,9 +92,9 @@ module.exports.updatePart = async (req, res) => {
     for (field in updateFeilds) {
       foundPart[field] = updateFeilds[field];
     }
-    await foundPart.save();
+    const updatedItem = await foundPart.save();
     // ! set the update or maybe use the save by updating individual properties?
-    res.status(200).json({ "message:": "success" });
+    res.status(200).json({ "message:": "success", updatedItem });
   } catch (error) {
     console.log("error at update", error);
     res.status(505).json({ message: "error updating", item: req.body });
